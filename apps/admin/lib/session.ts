@@ -11,6 +11,7 @@ export type Session = {
   user: {
     id: string;
     name: string;
+    email: string;
     role: Role;
     profileImage?: string;
   };

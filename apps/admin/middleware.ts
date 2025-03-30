@@ -8,10 +8,16 @@ import {
 } from "@/data/routes/default-routes";
 import { middlewareRouteCheck } from "@/lib/role/functions";
 import { getSession } from "@/lib/session";
+import { Role } from "@workspace/ui/enum/user.enum";
 
 export default async function middleware(req: NextRequest) {
   const session = await getSession();
-  const role = session?.user.role;
+  
+  const userRole = session?.user?.role;
+  const isAdminRole = userRole === Role.ADMIN || userRole === Role.SUPER_ADMIN;
+  
+  const role = isAdminRole ? userRole : undefined;
+  
   const pathname = req.nextUrl.pathname;
 
   // 1. Handle auth routes (login, register, etc.)

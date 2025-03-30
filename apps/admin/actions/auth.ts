@@ -30,10 +30,18 @@ export async function login(values: z.infer<typeof LoginSchema>) {
       password,
     });
 
+    if (
+      response.data.user.role !== "ADMIN" &&
+      response.data.user.role !== "SUPER_ADMIN"
+    ) {
+      return { error: "Invalid email or password." };
+    }
+
     await createSession({
       user: {
         id: response.data.user.id,
         name: response.data.user.name,
+        email: response.data.user.email,
         role: response.data.user.role,
         profileImage: response.data.user?.profileImage,
       },
@@ -59,7 +67,7 @@ export async function reset(values: z.infer<typeof ResetSchema>) {
   const { email } = validatedFields.data;
 
   try {
-    await axios.post(`${API_URL}/auth/forgot-password`, {
+    await axios.post(`${API_URL}/auth/auth/forgot-password`, {
       email,
       useCase: "forgetPassword",
       role: "user",
@@ -74,7 +82,7 @@ export async function reset(values: z.infer<typeof ResetSchema>) {
 }
 
 export async function signout() {
-  const res = await axiosClient.post(`${API_URL}/auth/logout`, {});
+  const res = await axiosClient.post(`${API_URL}/auth/auth/logout`, {});
   if (res.status !== 201) {
     throw new Error("Failed to sign out");
   }
@@ -89,7 +97,7 @@ export async function signout() {
 export const refreshToken = async (oldToken: string) => {
   try {
     const response = await axios.post(
-      `${API_URL}/auth/refresh`,
+      `${API_URL}/auth/auth/refresh`,
       {},
       {
         headers: {
@@ -117,7 +125,7 @@ export const newPassword = async (
   const { password, token } = validatedFields.data;
 
   try {
-    const response = await axios.post(`${API_URL}/auth/reset-password`, {
+    const response = await axios.post(`${API_URL}/auth/auth/reset-password`, {
       password,
       token,
     });
