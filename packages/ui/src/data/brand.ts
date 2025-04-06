@@ -11,7 +11,8 @@ export const BRAND = {
     instagram: "https://www.instagram.com/abc",
   },
   logo: "https://cashvio.s3.eu-north-1.amazonaws.com/assets/logo-full.png",
-  mobilelogo: "https://cashvio.s3.eu-north-1.amazonaws.com/assets/logo.png",
+  mobilelogo:
+    "https://cashvio.s3.eu-north-1.amazonaws.com/assets/logo.png",
 } as const;
 
 export const DevelopedBy = {
