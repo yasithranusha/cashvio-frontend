@@ -25,7 +25,7 @@ export const freePlan = {
   name: "Free",
   price: "$0 / mo",
   description: "Perfect for small businesses",
-  href: "/register",
+  href: "/signup",
   buttonText: "Get Started",
   features: [
     "Basic POS System",

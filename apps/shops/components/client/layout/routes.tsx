@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { clientRoutes } from "@/data/client-routes";
+import { clientRoutes } from "@/data/routes/client-routes";
 
 export type NavigationVariant = "navbar" | "footer";
 
