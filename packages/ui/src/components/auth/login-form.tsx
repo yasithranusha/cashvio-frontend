@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useState } from "react";
+import { useTransition, useState } from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { Button } from "@workspace/ui/components/button";
 import {
@@ -47,6 +47,7 @@ export function LoginForm({
   ...props
 }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
@@ -148,13 +149,14 @@ export function LoginForm({
                   )}
                 />
 
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={isPending}>
                   Login
                 </Button>
                 {gogoleLogin && (
                   <Button
                     className="w-full flex items-center justify-center gap-2 bg-white text-gray-700 hover:bg-gray-100 border-gray-300"
                     type="button"
+                    disabled={isPending}
                   >
                     <a href="/google/login"></a>
                     <span>Login with Google </span>
