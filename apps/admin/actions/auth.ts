@@ -13,8 +13,6 @@ import { BACKEND_URL } from "@/lib/constants";
 import { revalidatePath } from "next/cache";
 import { axiosClient } from "@/lib/customAxios";
 
-const API_URL = BACKEND_URL;
-
 export async function login(values: z.infer<typeof LoginSchema>) {
   const validatedFields = LoginSchema.safeParse(values);
 
@@ -25,7 +23,7 @@ export async function login(values: z.infer<typeof LoginSchema>) {
   const { email, password } = validatedFields.data;
 
   try {
-    const response = await axios.post(`${API_URL}/auth/auth/login`, {
+    const response = await axios.post(`${BACKEND_URL}/auth/auth/login`, {
       email,
       password,
     });
@@ -67,7 +65,7 @@ export async function reset(values: z.infer<typeof ResetSchema>) {
   const { email } = validatedFields.data;
 
   try {
-    await axios.post(`${API_URL}/auth/auth/forgot-password`, {
+    await axios.post(`${BACKEND_URL}/auth/auth/forgot-password`, {
       email,
       useCase: "forgetPassword",
       role: "user",
@@ -82,7 +80,7 @@ export async function reset(values: z.infer<typeof ResetSchema>) {
 }
 
 export async function signout() {
-  const res = await axiosClient.post(`${API_URL}/auth/auth/logout`, {});
+  const res = await axiosClient.post(`${BACKEND_URL}/auth/auth/logout`, {});
   if (res.status !== 201) {
     throw new Error("Failed to sign out");
   }
@@ -97,7 +95,7 @@ export async function signout() {
 export const refreshToken = async (oldToken: string) => {
   try {
     const response = await axios.post(
-      `${API_URL}/auth/auth/refresh`,
+      `${BACKEND_URL}/auth/auth/refresh`,
       {},
       {
         headers: {
@@ -125,10 +123,13 @@ export const newPassword = async (
   const { password, token } = validatedFields.data;
 
   try {
-    const response = await axios.post(`${API_URL}/auth/auth/reset-password`, {
-      password,
-      token,
-    });
+    const response = await axios.post(
+      `${BACKEND_URL}/auth/auth/reset-password`,
+      {
+        password,
+        token,
+      }
+    );
 
     return { success: response.data.message };
   } catch (error) {
