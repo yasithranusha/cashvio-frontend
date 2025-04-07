@@ -29,6 +29,7 @@ import {
 } from "@workspace/ui/components/sidebar";
 import { ISessionUser } from "@workspace/ui/types/user";
 import { signout } from "@/actions/auth";
+import { AvatarFallbackIcon } from "@workspace/ui/components/icons/user";
 
 export function NavUser({ user }: { user: ISessionUser }) {
   const { isMobile } = useSidebar();
@@ -48,7 +49,9 @@ export function NavUser({ user }: { user: ISessionUser }) {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.profileImage} alt={user.name} />
-                <AvatarFallback className="rounded-lg"></AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  <AvatarFallbackIcon />
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.name}</span>
@@ -67,7 +70,9 @@ export function NavUser({ user }: { user: ISessionUser }) {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.profileImage} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    <AvatarFallbackIcon />
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user.name}</span>

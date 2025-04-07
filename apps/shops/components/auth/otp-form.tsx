@@ -38,7 +38,6 @@ interface OTPRegisterFormProps {
   redirectUrl?: string;
 }
 
-// Create a simpler schema just for the OTP form
 const OtpFormSchema = z.object({
   otp: z.string().length(6, {
     message: "OTP must be exactly 6 characters",
@@ -53,7 +52,6 @@ export default function OTPRegisterForm({
 }: OTPRegisterFormProps) {
   const [isPending, startTransition] = useTransition();
   
-  // Use the simplified schema for the form
   const form = useForm<z.infer<typeof OtpFormSchema>>({
     resolver: zodResolver(OtpFormSchema),
     defaultValues: {
