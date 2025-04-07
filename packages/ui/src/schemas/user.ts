@@ -31,6 +31,38 @@ const userInfoSchema = z.object({
       },
       { message: "Date of birth must be in the past" }
     ),
+  contactNumber: z
+    .string()
+    .regex(/^\d+$/, { message: "Contact number must be digits only" })
+    .length(10, { message: "Contact number must be 10 digits" })
+    .optional(),
+});
+
+const shopInfoSchema = z.object({
+  businessName: z.string().min(2, {
+    message: "Business name must be at least 2 characters long",
+  }),
+  address: z.string().min(5, {
+    message: "Address must be at least 5 characters long",
+  }),
+  contactPhone: z
+    .string()
+    .regex(/^\+?[0-9]+$/, {
+      message: "Contact phone must be a valid phone number",
+    })
+    .optional(),
+  shopLogo: z
+    .string()
+    .url({
+      message: "Shop logo must be a valid URL",
+    })
+    .optional(),
+  shopBanner: z
+    .string()
+    .url({
+      message: "Shop banner must be a valid URL",
+    })
+    .optional(),
 });
 
 export const updateUserInfoSchema = userInfoSchema.extend({
@@ -55,6 +87,11 @@ const userWithPasswordSchema = z.object({
   ...passwordSchema.shape,
 });
 
+const userWithShopRegisterSchema = z.object({
+  ...userWithPasswordSchema.shape,
+  ...shopInfoSchema.shape,
+});
+
 const baseRegisterSchema = userWithPasswordSchema.extend({
   agree: z.boolean().refine((value) => value === true, {
     message: "You must agree to the terms and conditions.",
@@ -69,10 +106,27 @@ export const RegisterSchema = baseRegisterSchema.refine(
   }
 );
 
+export const ShopRegisterSchema = z
+  .object({
+    ...userWithShopRegisterSchema.shape,
+    agree: z.boolean().refine((value) => value === true, {
+      message: "You must agree to the terms and conditions.",
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords must match",
+    path: ["confirmPassword"],
+  });
+
 export const RegisterWithOtpSchema = baseRegisterSchema.extend({
   otp: z.string().length(6, {
     message: "OTP must be exactly 6 characters",
   }),
+});
+
+export const ShopRegisterWithOtpSchema = z.object({
+  ...userWithShopRegisterSchema.shape,
+  ...RegisterWithOtpSchema.shape,
 });
 
 export const otpSchema = z.object({

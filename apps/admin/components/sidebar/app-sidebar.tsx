@@ -36,7 +36,7 @@ export function AppSidebar({ user, className, ...props }: AppSidebarProps) {
             height={100}
             width={200}
             src={open ? BRAND?.logo || BRAND.mobilelogo : BRAND.mobilelogo}
-            className={`object-contain rounded-md shadow-md p-1 ${!open ? "bg-foreground" : "bg-foreground/13"}`}
+            className={`object-contain dark:invert`}
           />
         </div>
       </SidebarHeader>

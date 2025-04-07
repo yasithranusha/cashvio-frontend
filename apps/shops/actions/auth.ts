@@ -3,7 +3,9 @@
 import {
   LoginSchema,
   NewPasswordSchema,
+  ShopRegisterWithOtpSchema,
   ResetSchema,
+  ShopRegisterSchema,
 } from "@workspace/ui/schemas/user";
 import { z } from "zod";
 import axios from "axios";
@@ -12,6 +14,82 @@ import { redirect } from "next/navigation";
 import { BACKEND_URL } from "@/lib/constants";
 import { revalidatePath } from "next/cache";
 import { axiosClient } from "@/lib/customAxios";
+import { Role } from "@workspace/ui/enum/user.enum";
+
+export async function getOtp(values: z.infer<typeof ShopRegisterSchema>) {
+  const validatedFields = ShopRegisterSchema.safeParse(values);
+
+  if (!validatedFields.success) {
+    return { error: "Invalid fields!" };
+  }
+
+  const { email, name } = validatedFields.data;
+
+  try {
+    const response = await axios.post(`${BACKEND_URL}/auth/auth/otp/generate`, {
+      email,
+      name,
+    });
+    if (response.status !== 201) {
+      return { error: "Something went wrong" };
+    }
+    return { success: "Check your Email for OTP" };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return { error: error.response?.data?.message || "Something went wrong" };
+    }
+    return { error: "Something went wrong" };
+  }
+}
+
+export async function register(
+  values: z.infer<typeof ShopRegisterWithOtpSchema>
+) {
+  const validatedFields = ShopRegisterWithOtpSchema.safeParse(values);
+
+  if (!validatedFields.success) {
+    return { error: "Invalid fields!" };
+  }
+
+  const {
+    name,
+    email,
+    password,
+    otp,
+    contactNumber,
+    businessName,
+    address,
+    contactPhone,
+    shopLogo,
+    shopBanner,
+  } = validatedFields.data;
+
+  try {
+    const response = await axios.post(`${BACKEND_URL}/auth/auth/register`, {
+      name,
+      email,
+      password,
+      contactNumber,
+      businessName,
+      address,
+      contactPhone,
+      shopLogo,
+      shopBanner,
+      otp,
+    });
+
+    if (response.status !== 201) {
+      return { error: "Something went wrong" };
+    }
+
+    return { success: "Account Created successfully" };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return { error: error.response?.data?.message || "Something went wrong" };
+    }
+    return { error: "Something went wrong" };
+  }
+}
 
 export async function login(values: z.infer<typeof LoginSchema>) {
   const validatedFields = LoginSchema.safeParse(values);
@@ -29,8 +107,8 @@ export async function login(values: z.infer<typeof LoginSchema>) {
     });
 
     if (
-      response.data.user.role !== "ADMIN" &&
-      response.data.user.role !== "SUPER_ADMIN"
+      response.data.user.role !== Role.SHOP_OWNER &&
+      response.data.user.role !== Role.SHOP_STAFF
     ) {
       return { error: "Invalid email or password." };
     }
