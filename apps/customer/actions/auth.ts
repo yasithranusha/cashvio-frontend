@@ -3,9 +3,9 @@
 import {
   LoginSchema,
   NewPasswordSchema,
-  ShopRegisterWithOtpSchema,
+  RegisterWithOtpSchema,
   ResetSchema,
-  ShopRegisterSchema,
+  RegisterSchema,
 } from "@workspace/ui/schemas/user";
 import { z } from "zod";
 import axios from "axios";
@@ -16,8 +16,8 @@ import { revalidatePath } from "next/cache";
 import { axiosClient } from "@/lib/customAxios";
 import { Role } from "@workspace/ui/enum/user.enum";
 
-export async function getOtp(values: z.infer<typeof ShopRegisterSchema>) {
-  const validatedFields = ShopRegisterSchema.safeParse(values);
+export async function getOtp(values: z.infer<typeof RegisterSchema>) {
+  const validatedFields = RegisterSchema.safeParse(values);
 
   if (!validatedFields.success) {
     return { error: "Invalid fields!" };
@@ -42,10 +42,8 @@ export async function getOtp(values: z.infer<typeof ShopRegisterSchema>) {
   }
 }
 
-export async function register(
-  values: z.infer<typeof ShopRegisterWithOtpSchema>
-) {
-  const validatedFields = ShopRegisterWithOtpSchema.safeParse(values);
+export async function register(values: z.infer<typeof RegisterWithOtpSchema>) {
+  const validatedFields = RegisterWithOtpSchema.safeParse(values);
 
   if (!validatedFields.success) {
     return { error: "Invalid fields!" };
@@ -57,11 +55,6 @@ export async function register(
     password,
     otp,
     contactNumber,
-    businessName,
-    address,
-    contactPhone,
-    shopLogo,
-    shopBanner,
   } = validatedFields.data;
 
   try {
@@ -70,11 +63,6 @@ export async function register(
       email,
       password,
       contactNumber,
-      businessName,
-      address,
-      contactPhone,
-      shopLogo,
-      shopBanner,
       otp,
     });
 
@@ -106,12 +94,7 @@ export async function login(values: z.infer<typeof LoginSchema>) {
       password,
     });
 
-    console.log("Login response", response.data);
-
-    if (
-      response.data.user.role !== Role.SHOP_OWNER &&
-      response.data.user.role !== Role.SHOP_STAFF
-    ) {
+    if (response.data.user.role !== Role.CUSTOMER) {
       return { error: "Invalid email or password." };
     }
 
@@ -188,7 +171,7 @@ export const refreshToken = async (oldToken: string) => {
     return response.data.accessToken;
   } catch (error) {
     console.error("Failed to refresh the token", error);
-    redirect("/login");
+    redirect("/signin");
   }
 };
 

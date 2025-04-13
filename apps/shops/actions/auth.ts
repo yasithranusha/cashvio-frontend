@@ -106,8 +106,6 @@ export async function login(values: z.infer<typeof LoginSchema>) {
       password,
     });
 
-    console.log("Login response", response.data);
-
     if (
       response.data.user.role !== Role.SHOP_OWNER &&
       response.data.user.role !== Role.SHOP_STAFF
@@ -188,7 +186,7 @@ export const refreshToken = async (oldToken: string) => {
     return response.data.accessToken;
   } catch (error) {
     console.error("Failed to refresh the token", error);
-    redirect("/login");
+    redirect("/signin");
   }
 };
 
