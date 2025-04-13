@@ -106,7 +106,6 @@ export async function login(values: z.infer<typeof LoginSchema>) {
       password,
     });
 
-    console.log("Login response", response.data);
 
     if (
       response.data.user.role !== Role.SHOP_OWNER &&

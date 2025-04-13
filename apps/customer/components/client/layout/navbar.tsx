@@ -8,8 +8,13 @@ import { cn } from "@workspace/ui/lib/utils";
 import { BRAND } from "@workspace/ui/data/brand";
 import Image from "next/image";
 import { NavigationLinks } from "@/components/client/layout/routes";
+import { ISessionUser } from "@workspace/ui/types/user";
 
-export const HeroHeader = () => {
+type HeroHeaderProps = {
+  user: ISessionUser;
+};
+
+export const HeroHeader = ({ user }: HeroHeaderProps) => {
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
 
