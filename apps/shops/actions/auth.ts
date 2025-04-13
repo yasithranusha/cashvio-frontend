@@ -186,7 +186,7 @@ export const refreshToken = async (oldToken: string) => {
     return response.data.accessToken;
   } catch (error) {
     console.error("Failed to refresh the token", error);
-    redirect("/login");
+    redirect("/signin");
   }
 };
 

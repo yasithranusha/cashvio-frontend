@@ -9,14 +9,19 @@ import { BRAND } from "@workspace/ui/data/brand";
 import Image from "next/image";
 import { NavigationLinks } from "@/components/client/layout/routes";
 import { ISessionUser } from "@workspace/ui/types/user";
+import { signout } from "@/actions/auth";
 
 type HeroHeaderProps = {
-  user: ISessionUser;
+  user: ISessionUser | undefined;
 };
 
 export const HeroHeader = ({ user }: HeroHeaderProps) => {
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+
+  const handleLogout = async () => {
+    const res = await signout();
+  };
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -85,26 +90,34 @@ export const HeroHeader = ({ user }: HeroHeaderProps) => {
                   size="sm"
                   className={cn(isScrolled && "lg:hidden")}
                 >
-                  <Link href="#">
-                    <span>Login</span>
+                  <Link href={user ? "/dashboard" : "/signin"}>
+                    <span>{user ? "Dashboard" : "Login"}</span>
                   </Link>
                 </Button>
-                <Button
-                  asChild
-                  size="sm"
-                  className={cn(isScrolled && "lg:hidden")}
-                >
-                  <Link href="/signup">
-                    <span>Sign Up</span>
-                  </Link>
-                </Button>
+                {user ? (
+                  <Button
+                    size="sm"
+                    className={cn(isScrolled && "lg:hidden")}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                ) : (
+                  <Button
+                    asChild
+                    size="sm"
+                    className={cn(isScrolled && "lg:hidden")}
+                  >
+                    <Link href="/signup">Get Started</Link>
+                  </Button>
+                )}
                 <Button
                   asChild
                   size="sm"
                   className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
                 >
-                  <Link href="#">
-                    <span>Get Started</span>
+                  <Link href={user ? "/dashboard" : "/signup"}>
+                    <span>{user ? "Dashboard" : "Get Started"}</span>
                   </Link>
                 </Button>
               </div>
