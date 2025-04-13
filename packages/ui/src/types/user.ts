@@ -7,3 +7,9 @@ export interface ISessionUser {
   role: Role;
   profileImage?: string;
 }
+
+export type Session = {
+  user: ISessionUser;
+  accessToken: string;
+  refreshToken: string;
+}
