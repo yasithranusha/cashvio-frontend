@@ -2,8 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google"
 
 import "@workspace/ui/globals.css"
 import { Providers } from "@/components/providers"
-import { Metadata } from "next"
 import { Toaster } from "@workspace/ui/components/sonner";
+import { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Cashvio",

@@ -1,3 +1,3 @@
-export default function SHopDashboard() {
+export default function ShopDashboard() {
   return <div>Dashnboard</div>;
 }

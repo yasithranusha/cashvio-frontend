@@ -1,5 +1,5 @@
 import { Role } from "@workspace/ui/enum/user.enum";
-import { TlinkTarget } from "@workspace/ui/types/components-props";
+import { TlinkTarget } from "@workspace/ui/types/common";
 import { type LucideIcon as TLucideIcon } from "lucide-react";
 
 interface IBaseRoute {
