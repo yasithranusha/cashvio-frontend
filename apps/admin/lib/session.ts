@@ -82,6 +82,7 @@ export async function updateSession(userData: Partial<Session["user"]>) {
 export async function deleteSession() {
   try {
     (await cookies()).delete("session");
+    (await cookies()).delete("selected-shop");
   } catch (error) {
     console.error("Failed to delete session:", error);
   }

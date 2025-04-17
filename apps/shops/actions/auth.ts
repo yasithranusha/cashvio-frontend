@@ -15,6 +15,8 @@ import { BACKEND_URL } from "@/lib/constants";
 import { revalidatePath } from "next/cache";
 import { axiosClient } from "@/lib/customAxios";
 import { Role } from "@workspace/ui/enum/user.enum";
+import { cookies } from "next/headers";
+import { setSelectedShopId } from "@/lib/shop";
 
 export async function getOtp(values: z.infer<typeof ShopRegisterSchema>) {
   const validatedFields = ShopRegisterSchema.safeParse(values);
@@ -127,6 +129,11 @@ export async function login(values: z.infer<typeof LoginSchema>) {
       accessToken: response.data.accessToken,
       refreshToken: response.data.refreshToken,
     });
+
+    if (response.data.user?.defaultShopId) {
+      await setSelectedShopId(response.data.user.defaultShopId);
+    }
+
     return { success: "Logged in successfully" };
   } catch (error) {
     if (axios.isAxiosError(error)) {

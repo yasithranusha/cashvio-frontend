@@ -18,13 +18,15 @@ import {
   availableProjectsRoutes,
 } from "@/data/routes/admin-routes";
 import Image from "next/image";
+import { ShopSwitcher } from "./shop-switcher";
 
 type AppSidebarProps = {
   user: ISessionUser;
+  selectedShopId: string | null;
   className?: string;
 };
 
-export function AppSidebar({ user, className, ...props }: AppSidebarProps) {
+export function AppSidebar({ user, selectedShopId, className, ...props }: AppSidebarProps) {
   const { open } = useSidebar();
 
   return (
@@ -38,7 +40,10 @@ export function AppSidebar({ user, className, ...props }: AppSidebarProps) {
             src={open ? BRAND?.logo || BRAND.mobilelogo : BRAND.mobilelogo}
             className={`object-contain dark:invert`}
           />
-        </div>
+        </div>{" "}
+        {user.shops && user.shops.length > 0 && (
+          <ShopSwitcher user={user} selectedShopId={selectedShopId} />
+        )}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={availableNavMainRoutes(user.role)} />

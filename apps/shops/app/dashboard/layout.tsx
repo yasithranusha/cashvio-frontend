@@ -4,6 +4,7 @@ import { SidebarProvider } from "@workspace/ui/components/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import AdminHeaderContent from "@/components/sidebar/sidebar-header";
 import { getSession } from "@/lib/session";
+import { getSelectedShopId } from "@/lib/shop";
 
 export default async function Layout({
   children,
@@ -14,6 +15,7 @@ export default async function Layout({
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
 
   const session = await getSession();
+  const selectedShopId = await getSelectedShopId();
 
   const user = session?.user;
 
@@ -28,7 +30,7 @@ export default async function Layout({
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
       <div className="flex h-screen w-screen overflow-hidden">
-        <AppSidebar user={user} />
+        <AppSidebar user={user} selectedShopId={selectedShopId} />
         <div className="flex-1 flex flex-col overflow-hidden">
           <AdminHeaderContent role={user.role} />
           <div className="flex-1 overflow-auto p-4">

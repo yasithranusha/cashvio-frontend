@@ -2,6 +2,7 @@ import { getSuppliers } from "@/actions/supplier";
 import { columns } from "@/components/supplier/datatable/supplier-columns";
 import { DataTable } from "@workspace/ui/components/datatable/datatable";
 import { getSession } from "@/lib/session";
+import { getSelectedShopId } from "@/lib/shop";
 
 import { Metadata } from "next";
 export const metadata: Metadata = {
@@ -11,34 +12,17 @@ export const metadata: Metadata = {
 };
 
 export default async function SupplierPage() {
-  const suppliersData = await getSuppliers(
-    "d20139cf-cb49-4999-a6e2-ff02830c13de"
-  );
+  const selectedShopId = await getSelectedShopId();
 
-  // const filters = [
-  //   {
-  //     title: "Status",
-  //     filterKey: "status",
-  //     options: [
-  //       {
-  //         label: "Pending",
-  //         value: "pending",
-  //       },
-  //       {
-  //         label: "Processing",
-  //         value: "processing",
-  //       },
-  //       {
-  //         label: "Success",
-  //         value: "success",
-  //       },
-  //       {
-  //         label: "Failed",
-  //         value: "failed",
-  //       },
-  //     ],
-  //   },
-  // ];
+  if (!selectedShopId) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>No shop selected. Please select a shop or contact support.</p>
+      </div>
+    );
+  }
+
+  const suppliersData = await getSuppliers(selectedShopId);
 
   if (suppliersData.error) {
     return (
