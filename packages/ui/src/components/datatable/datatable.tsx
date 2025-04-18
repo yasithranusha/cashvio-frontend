@@ -29,7 +29,6 @@ import {
 import { DataTablePagination } from "@workspace/ui/components/datatable/datatable-pagination";
 import { DataTableToolbar } from "@workspace/ui/components/datatable/data-table-toolbar";
 
-// Add a custom filter function for handling arrays of values
 const multiSelectFilter: FilterFn<any> = (row, columnId, filterValues) => {
   // When no values are selected, show all rows
   if (!Array.isArray(filterValues) || filterValues.length === 0) return true;
@@ -42,7 +41,7 @@ const multiSelectFilter: FilterFn<any> = (row, columnId, filterValues) => {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  searchColumn?: string;
+  searchColumn?: string | string[];
   searchPlaceholder?: string;
   filters?: Array<{
     title: string;
@@ -69,24 +68,49 @@ export function DataTable<TData, TValue>({
     []
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = React.useState<string>("");
+
+  // Custom global filter function for searching across multiple columns
+  const customGlobalFilterFn: FilterFn<any> = React.useCallback(
+    (row, columnId, filterValue) => {
+      // Skip filtering if no filter value
+      if (!filterValue || typeof filterValue !== "string") return true;
+
+      // If searchColumn is an array, search in all specified columns
+      if (Array.isArray(searchColumn)) {
+        return searchColumn.some((colId) => {
+          const value = row.getValue(colId);
+          return (
+            value != null &&
+            String(value).toLowerCase().includes(filterValue.toLowerCase())
+          );
+        });
+      }
+
+      // Otherwise use the default global filter behavior
+      return false;
+    },
+    [searchColumn]
+  );
 
   // Register custom filter function for filter keys
   const tableColumns = React.useMemo(() => {
-    return columns.map(column => {
+    return columns.map((column) => {
       // Check if this column has a multi-select filter
-      const hasMultiSelectFilter = filters.some(filter => {
+      const hasMultiSelectFilter = filters.some((filter) => {
         // Safely access potential column identifiers
-        const columnKey = 'accessorKey' in column ? column.accessorKey : column.id;
+        const columnKey =
+          "accessorKey" in column ? column.accessorKey : column.id;
         return filter.filterKey === columnKey;
       });
-      
+
       if (hasMultiSelectFilter) {
         return {
           ...column,
-          filterFn: multiSelectFilter
+          filterFn: multiSelectFilter,
         };
       }
-      
+
       return column;
     });
   }, [columns, filters]);
@@ -99,12 +123,15 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
+      globalFilter,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: customGlobalFilterFn,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

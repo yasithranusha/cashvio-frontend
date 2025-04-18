@@ -36,8 +36,8 @@ export default async function SupplierPage() {
       <DataTable
         columns={columns}
         data={suppliersData?.data?.data || []}
-        searchColumn="name"
-        searchPlaceholder="Search suppliers..."
+        searchColumn={["name", "contactNumber"]}
+        searchPlaceholder="Search by name or contact number"
       />
     </div>
   );
