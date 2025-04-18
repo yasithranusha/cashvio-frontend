@@ -22,9 +22,7 @@ export default function AdminHeaderContent({ role }: AdminHeaderContentProps) {
   const pathname = usePathname();
   const availableRoutes = getAllAvailableRoutes(role);
   const { pathOne, pathTwo } = useAdminRoutes(availableRoutes, pathname);
-  console.log("pathOne", pathOne);
-  console.log("pathTwo", pathTwo);
-  console.log("pathname", pathname);
+
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
       <SidebarTrigger className="-ml-1 cursor-pointer" />

@@ -36,20 +36,25 @@ export function middlewareRouteCheck(
   pathname: string
 ): boolean {
   for (const route of routes) {
-    if (pathname.startsWith(route.url)) {
-      // If route matches exactly
-      if (pathname === route.url) {
+    // If route matches exactly
+    if (pathname === route.url) {
+      return true;
+    }
+    
+    // If pathname starts with route url and it's a direct subfolder
+    if (pathname.startsWith(route.url + '/')) {
+      return true;
+    }
+
+    // If has sub-routes, check them
+    if (route.items?.length) {
+      // Find matching sub-route (exact match or starts with)
+      const matchingSubRoute = route.items.find(
+        (subRoute) => pathname === subRoute.url || pathname.startsWith(subRoute.url + '/')
+      );
+
+      if (matchingSubRoute) {
         return true;
-      }
-
-      // If has sub-routes, check them
-      if (route.items?.length) {
-        // Find matching sub-route
-        const matchingSubRoute = route.items.find(
-          (subRoute) => pathname === subRoute.url
-        );
-
-        return !!matchingSubRoute;
       }
     }
   }

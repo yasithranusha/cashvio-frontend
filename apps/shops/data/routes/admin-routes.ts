@@ -1,12 +1,10 @@
 import { getAvailableRoutesForRole } from "@/lib/role/functions";
 import { Role } from "@workspace/ui/enum/user.enum";
-import { TlinkTarget } from "@workspace/ui/types/components-props";
+import { TlinkTarget } from "@workspace/ui/types/common";
 import {
   type LucideIcon as TLucideIcon,
-  SquareTerminal,
   HistoryIcon,
   ListStartIcon,
-  BookOpen,
   Frame,
   Folder,
   Forward,
@@ -14,6 +12,7 @@ import {
   PieChart,
   LayoutDashboard,
   Users,
+  BookUser,
 } from "lucide-react";
 
 export interface IBaseMenuItem {
@@ -58,54 +57,15 @@ const navMain: IMenueItem[] = [
     ],
   },
   {
-    title: "Playground",
-    url: "/playground",
-    icon: SquareTerminal,
-    items: [
-      {
-        title: "History",
-        url: "/playground/history",
-        icon: HistoryIcon,
-      },
-      {
-        title: "Starred",
-        url: "/playground/starred",
-        icon: ListStartIcon,
-      },
-      {
-        title: "Settings",
-        url: "/settings",
-      },
-    ],
-  },
-  {
-    title: "Documentation",
-    url: "/docs",
-    icon: BookOpen,
-    items: [
-      {
-        title: "Introduction",
-        url: "/docs/introduction",
-      },
-      {
-        title: "Get Started",
-        url: "/docs/get-started",
-      },
-      {
-        title: "Tutorials",
-        url: "/docs/tutorials",
-      },
-      {
-        title: "Changelog",
-        url: "/docs/changelog",
-      },
-    ],
+    title: "Suppliers",
+    url: "/dashboard/suppliers",
+    icon: BookUser,
   },
   {
     title: "Users",
     url: "/users",
     icon: Users,
-    onlyForRoles: [Role.SUPER_ADMIN],
+    onlyForRoles: [Role.SHOP_OWNER],
   },
 ];
 
