@@ -2,6 +2,7 @@ import { getSuppliers } from "@/actions/supplier";
 import { columns } from "@/components/supplier/datatable/supplier-columns";
 import { DataTable } from "@workspace/ui/components/datatable/datatable";
 import { getSelectedShopId } from "@/lib/shop";
+import { SupplierDialog } from "@/components/supplier/dialog/supplier-dialog";
 
 import { Metadata } from "next";
 export const metadata: Metadata = {
@@ -32,12 +33,16 @@ export default async function SupplierPage() {
   }
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 space-y-5">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold">Suppliers</h2>
+        <SupplierDialog shopId={selectedShopId} />
+      </div>
       <DataTable
         columns={columns}
         data={suppliersData?.data?.data || []}
-        searchColumn={["name", "contactNumber"]}
-        searchPlaceholder="Search by name or contact number"
+        searchColumn={["name", "email"]}
+        searchPlaceholder="Search by name or email"
       />
     </div>
   );

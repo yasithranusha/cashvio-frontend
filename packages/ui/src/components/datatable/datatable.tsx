@@ -70,25 +70,55 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState<string>("");
 
-  // Custom global filter function for searching across multiple columns
+    // Replace the customGlobalFilterFn with this simpler version:
+  
   const customGlobalFilterFn: FilterFn<any> = React.useCallback(
     (row, columnId, filterValue) => {
       // Skip filtering if no filter value
       if (!filterValue || typeof filterValue !== "string") return true;
-
-      // If searchColumn is an array, search in all specified columns
+  
+      const filterValueLower = filterValue.toLowerCase();
+  
+      // Search across multiple columns if provided
       if (Array.isArray(searchColumn)) {
-        return searchColumn.some((colId) => {
-          const value = row.getValue(colId);
-          return (
-            value != null &&
-            String(value).toLowerCase().includes(filterValue.toLowerCase())
-          );
-        });
+        // Try to find a match in any of the specified columns
+        for (const colId of searchColumn) {
+          try {
+            // Try to safely get the value
+            const value = row.getValue(colId);
+            
+            // If value exists and contains the search string, return true
+            if (value != null && 
+                String(value).toLowerCase().includes(filterValueLower)) {
+              return true;
+            }
+          } catch (e) {
+            // Skip if column doesn't exist
+            continue;
+          }
+        }
+        // No match found in any column
+        return false;
+      } 
+      // Search in a single column
+      else if (typeof searchColumn === "string") {
+        try {
+          const value = row.getValue(searchColumn);
+          return value != null && 
+            String(value).toLowerCase().includes(filterValueLower);
+        } catch (e) {
+          return false;
+        }
       }
-
-      // Otherwise use the default global filter behavior
-      return false;
+      
+      // If no searchColumn is specified, fall back to the column being filtered
+      try {
+        const value = row.getValue(columnId);
+        return value != null && 
+          String(value).toLowerCase().includes(filterValueLower);
+      } catch (e) {
+        return false;
+      }
     },
     [searchColumn]
   );

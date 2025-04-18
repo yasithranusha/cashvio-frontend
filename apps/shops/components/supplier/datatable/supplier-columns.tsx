@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import SupplierActions from "./supplier-actions";
 import { DataTableColumnHeader } from "@workspace/ui/components/datatable/datatable-header";
 import { TSupplier } from "@/types/supplier";
+import { formatPhoneNumber } from "react-phone-number-input";
 import Link from "next/link";
 
 export const columns: ColumnDef<TSupplier>[] = [
@@ -63,7 +64,7 @@ export const columns: ColumnDef<TSupplier>[] = [
             href={`tel:${contact}`}
             className="text-primary hover:underline"
           >
-            {contact}
+            {formatPhoneNumber(contact)}
           </Link>
 
           {haveWhatsApp && (
@@ -90,12 +91,12 @@ export const columns: ColumnDef<TSupplier>[] = [
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "updatedAt",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Created" />
+      <DataTableColumnHeader column={column} title="Last Update" />
     ),
     cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
+      const date = new Date(row.getValue("updatedAt"));
       return (
         <div className="text-left text-sm text-muted-foreground">
           {date.toLocaleDateString()}

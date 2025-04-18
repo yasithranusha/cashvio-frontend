@@ -33,29 +33,21 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
   const [searchValue, setSearchValue] = useState("");
 
-  // Handle searching across multiple columns
+  // Update the handleSearch function to be simpler:
+  
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchValue(value);
-
-    if (Array.isArray(searchColumn)) {
-      // Clear previous search filters
-      searchColumn.forEach((column) => {
-        if (column && table.getColumn(column)) {
-          table.getColumn(column)?.setFilterValue("");
-        }
+    
+    // ONLY set the global filter - don't try to set individual column filters
+    table.setGlobalFilter(value);
+    
+    // Clear any column-specific filters that might interfere with search
+    if (value && Array.isArray(searchColumn)) {
+      searchColumn.forEach(colId => {
+        const column = table.getColumn(colId);
+        if (column) column.setFilterValue(undefined);
       });
-
-      // Set new search filter on first column (to show filter indicator)
-      if (searchColumn.length > 0 && searchColumn[0] && table.getColumn(searchColumn[0])) {
-        table.getColumn(searchColumn[0])?.setFilterValue(value);
-      }
-
-      // Apply global filter for all specified columns
-      table.setGlobalFilter(value);
-    } else if (searchColumn && table.getColumn(searchColumn)) {
-      // Legacy single column search
-      table.getColumn(searchColumn)?.setFilterValue(value);
     }
   };
 

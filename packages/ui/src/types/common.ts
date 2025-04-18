@@ -9,3 +9,9 @@ export type TPaginatedResponse<T> = {
     totalPages: number;
   };
 };
+
+export type ActionResponse = {
+  success: boolean;
+  data?: any;
+  error?: string;
+};
