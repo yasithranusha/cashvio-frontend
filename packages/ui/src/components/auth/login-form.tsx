@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form";
 import { Input } from "@workspace/ui/components/input";
+import { Checkbox } from "@workspace/ui/components/checkbox";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LoginSchema } from "@workspace/ui/schemas/user";
@@ -54,6 +55,7 @@ export function LoginForm({
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
@@ -144,6 +146,24 @@ export function LoginForm({
                           </span>
                         </button>
                       </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={loginForm.control}
+                  name="rememberMe"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="flex items-center gap-3">
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                          <div className="text-sm">Remember me </div>
+                        </div>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -1,28 +1,19 @@
 "use server";
 
 import { jwtVerify, SignJWT } from "jose";
-
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { Role } from "@workspace/ui/enum/user.enum";
 import { SESSION_SECRET } from "@/lib/constants";
+import { Session } from "@workspace/ui/types/user";
 
-export type Session = {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    role: Role;
-    profileImage?: string;
-  };
-  accessToken: string;
-  refreshToken: string;
-};
-
-const SESSION_SECRET_KEY = SESSION_SECRET;
-const encodedKey = new TextEncoder().encode(SESSION_SECRET_KEY);
+const encodedKey = new TextEncoder().encode(SESSION_SECRET);
 
 export async function createSession(payload: Session) {
+  if (!payload.accessToken || !payload.refreshToken || !payload.user?.id) {
+    throw new Error("Invalid session data");
+  }
+
+  await deleteSession();
+
   const expiredAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
   const session = await new SignJWT(payload)
@@ -33,7 +24,7 @@ export async function createSession(payload: Session) {
 
   (await cookies()).set("session", session, {
     httpOnly: true,
-    secure: false,
+    secure: process.env.NODE_ENV === "production",
     expires: expiredAt,
     sameSite: "lax",
     path: "/",
@@ -51,8 +42,9 @@ export async function getSession() {
 
     return payload as Session;
   } catch (err) {
-    console.error("Failed to verify the session", err);
-    redirect("/auth/sigin");
+    console.error("Failed to verify the session:", err);
+    await deleteSession();
+    return null;
   }
 }
 
@@ -60,28 +52,40 @@ export async function updateSession(userData: Partial<Session["user"]>) {
   const cookie = (await cookies()).get("session")?.value;
   if (!cookie) return null;
 
-  const { payload } = await jwtVerify<Session>(cookie, encodedKey);
-  if (!payload) throw new Error("Session not found");
+  try {
+    const { payload } = await jwtVerify<Session>(cookie, encodedKey, {
+      algorithms: ["HS256"],
+    });
 
-  const newPayload: Session = {
-    user: {
-      ...payload.user,
-      ...userData,
-    },
-    accessToken: payload.accessToken,
-    refreshToken: payload.refreshToken,
-  };
+    if (!payload) return null;
 
-  await deleteSession();
-  await createSession(newPayload);
+    const newPayload: Session = {
+      user: {
+        ...payload.user,
+        ...userData,
+      },
+      accessToken: payload.accessToken,
+      refreshToken: payload.refreshToken,
+    };
 
-  const updatedSession = await getSession();
+    await deleteSession();
+    await createSession(newPayload);
 
-  return updatedSession;
+    return await getSession();
+  } catch (error) {
+    console.error("Failed to update session:", error);
+    await deleteSession();
+    return null;
+  }
 }
 
 export async function deleteSession() {
-  (await cookies()).delete("session");
+  try {
+    (await cookies()).delete("session");
+    (await cookies()).delete("selected-shop");
+  } catch (error) {
+    console.error("Failed to delete session:", error);
+  }
 }
 
 export async function updateTokens({
@@ -94,17 +98,26 @@ export async function updateTokens({
   const cookie = (await cookies()).get("session")?.value;
   if (!cookie) return null;
 
-  const { payload } = await jwtVerify<Session>(cookie, encodedKey);
+  try {
+    const { payload } = await jwtVerify<Session>(cookie, encodedKey, {
+      algorithms: ["HS256"],
+    });
 
-  if (!payload) throw new Error("Session not found");
+    if (!payload) return null;
 
-  const newPayload: Session = {
-    user: {
-      ...payload.user,
-    },
-    accessToken,
-    refreshToken,
-  };
+    const newPayload: Session = {
+      user: {
+        ...payload.user,
+      },
+      accessToken,
+      refreshToken,
+    };
 
-  await createSession(newPayload);
+    await createSession(newPayload);
+    return true;
+  } catch (error) {
+    console.error("Failed to update tokens:", error);
+    await deleteSession();
+    return null;
+  }
 }
