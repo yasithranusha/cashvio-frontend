@@ -34,7 +34,7 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
-        {/* <Input
+        <Input
           placeholder={searchPlaceholder}
           value={
             (table.getColumn(searchColumn)?.getFilterValue() as string) ?? ""
@@ -43,7 +43,7 @@ export function DataTableToolbar<TData>({
             table.getColumn(searchColumn)?.setFilterValue(event.target.value)
           }
           className="h-8 w-[150px] lg:w-[250px]"
-        /> */}
+        />
 
         {filters.map(
           (filter) =>

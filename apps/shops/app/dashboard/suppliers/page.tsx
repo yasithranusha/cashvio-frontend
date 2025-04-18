@@ -1,7 +1,6 @@
 import { getSuppliers } from "@/actions/supplier";
 import { columns } from "@/components/supplier/datatable/supplier-columns";
 import { DataTable } from "@workspace/ui/components/datatable/datatable";
-import { getSession } from "@/lib/session";
 import { getSelectedShopId } from "@/lib/shop";
 
 import { Metadata } from "next";
@@ -37,8 +36,8 @@ export default async function SupplierPage() {
       <DataTable
         columns={columns}
         data={suppliersData?.data?.data || []}
-        searchColumn="email"
-        searchPlaceholder="Filter emails..."
+        searchColumn="name"
+        searchPlaceholder="Search suppliers..."
       />
     </div>
   );
