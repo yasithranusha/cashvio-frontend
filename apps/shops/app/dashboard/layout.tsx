@@ -29,11 +29,11 @@ export default async function Layout({
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <div className="flex h-screen w-screen overflow-hidden">
+      <div className="flex h-screen w-screen">
         <AppSidebar user={user} selectedShopId={selectedShopId} />
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col ">
           <AdminHeaderContent role={user.role} />
-          <div className="flex-1 overflow-auto p-4">
+          <div className="flex-1 overflow-auto ">
             <div className="container mx-auto">{children}</div>
           </div>
         </div>
