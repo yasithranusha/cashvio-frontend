@@ -33,7 +33,7 @@ export default async function Layout({
         <AppSidebar user={user} selectedShopId={selectedShopId} />
         <div className="flex-1 flex flex-col ">
           <AdminHeaderContent role={user.role} />
-          <div className="flex-1 overflow-auto ">
+          <div className="flex-1 px-4">
             <div className="container mx-auto">{children}</div>
           </div>
         </div>

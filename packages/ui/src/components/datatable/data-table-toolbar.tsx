@@ -58,7 +58,7 @@ export function DataTableToolbar<TData>({
           placeholder={searchPlaceholder}
           value={searchValue}
           onChange={handleSearch}
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="h-8 w-full md:w-[150px] lg:w-[250px]"
         />
 
         {filters.map(

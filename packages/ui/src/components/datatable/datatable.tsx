@@ -70,15 +70,15 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState<string>("");
 
-    // Replace the customGlobalFilterFn with this simpler version:
-  
+  // Replace the customGlobalFilterFn with this simpler version:
+
   const customGlobalFilterFn: FilterFn<any> = React.useCallback(
     (row, columnId, filterValue) => {
       // Skip filtering if no filter value
       if (!filterValue || typeof filterValue !== "string") return true;
-  
+
       const filterValueLower = filterValue.toLowerCase();
-  
+
       // Search across multiple columns if provided
       if (Array.isArray(searchColumn)) {
         // Try to find a match in any of the specified columns
@@ -86,10 +86,12 @@ export function DataTable<TData, TValue>({
           try {
             // Try to safely get the value
             const value = row.getValue(colId);
-            
+
             // If value exists and contains the search string, return true
-            if (value != null && 
-                String(value).toLowerCase().includes(filterValueLower)) {
+            if (
+              value != null &&
+              String(value).toLowerCase().includes(filterValueLower)
+            ) {
               return true;
             }
           } catch (e) {
@@ -99,23 +101,27 @@ export function DataTable<TData, TValue>({
         }
         // No match found in any column
         return false;
-      } 
+      }
       // Search in a single column
       else if (typeof searchColumn === "string") {
         try {
           const value = row.getValue(searchColumn);
-          return value != null && 
-            String(value).toLowerCase().includes(filterValueLower);
+          return (
+            value != null &&
+            String(value).toLowerCase().includes(filterValueLower)
+          );
         } catch (e) {
           return false;
         }
       }
-      
+
       // If no searchColumn is specified, fall back to the column being filtered
       try {
         const value = row.getValue(columnId);
-        return value != null && 
-          String(value).toLowerCase().includes(filterValueLower);
+        return (
+          value != null &&
+          String(value).toLowerCase().includes(filterValueLower)
+        );
       } catch (e) {
         return false;
       }
@@ -170,65 +176,59 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  return (
-    <div className="space-y-4">
-      <DataTableToolbar
-        table={table}
-        searchColumn={searchColumn}
-        searchPlaceholder={searchPlaceholder}
-        filters={filters}
-      />
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+return (
+  <div className="space-y-4 w-full max-w-[calc(100vw-2rem)]">
+    <DataTableToolbar
+      table={table}
+      searchColumn={searchColumn}
+      searchPlaceholder={searchPlaceholder}
+      filters={filters}
+    />
+    <div className="overflow-auto rounded-md border">
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <DataTablePagination table={table} />
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
-  );
+    <DataTablePagination table={table} />
+  </div>
+);
 }
