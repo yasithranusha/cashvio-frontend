@@ -24,7 +24,7 @@ function getCategoryEndpoint(type: CategoryType = "main") {
     case "sub":
       return `${BACKEND_URL}stock/categories/subcategories`;
     case "subsub":
-      return `${BACKEND_URL}stock/categories/subcategories/subsubcategories`;
+      return `${BACKEND_URL}stock/categories/subsubcategories`;
     case "main":
     default:
       return `${BACKEND_URL}stock/categories`;

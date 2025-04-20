@@ -6,6 +6,7 @@ import { CategoryDialog } from "@/components/categories/dialog/category-dialog";
 
 import { Metadata } from "next";
 import { ProductStatus } from "@workspace/ui/types/common";
+import CategoryTable from "@/components/categories/category-table";
 export const metadata: Metadata = {
   title: "Categories | Cashvio",
   description:
@@ -33,33 +34,15 @@ export default async function CategoryPage() {
     );
   }
 
-  const filters = [
-    {
-      title: "Status",
-      filterKey: "status",
-      options: [
-        {
-          label: "Active",
-          value: ProductStatus.ACTIVE,
-        },
-        {
-          label: "Inactive",
-          value: ProductStatus.HIDE,
-        },
-      ],
-    },
-  ];
-
   return (
     <div className="container mx-auto py-10 space-y-5">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Categories</h2>
-        <CategoryDialog shopId={selectedShopId} />
+        <CategoryDialog shopId={selectedShopId} type="main"/>
       </div>
-      <DataTable
-        columns={columns}
+      <CategoryTable
         data={categoriesData?.data?.data || []}
-        filters={filters}
+        categoryType="main"
         searchColumn={["name", "description"]}
         searchPlaceholder="Search by name or description"
       />

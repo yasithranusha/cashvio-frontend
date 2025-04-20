@@ -22,11 +22,14 @@ import { TCategory } from "@workspace/ui/types/categories";
 import CategoryForm from "@/components/categories/dialog/category-form";
 import CategoryDeleteDialog from "@/components/categories/dialog/category-delete";
 import { AlertDialog } from "@workspace/ui/components/alert-dialog";
+import { CategoryType } from "./categories-columns";
 
 export default function CategoriesActions({
+  categoryType,
   category,
 }: {
-  category: TCategory;
+    category: TCategory;
+    categoryType: CategoryType;
 }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);

@@ -12,7 +12,7 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
 
   const session = await getSession();
   const selectedShopId = await getSelectedShopId();
