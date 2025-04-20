@@ -57,6 +57,25 @@ const navMain: IMenueItem[] = [
     ],
   },
   {
+    title: "Categories",
+    url: "/dashboard/categories",
+    icon: Folder,
+    items: [
+      {
+        title: "Main Categories",
+        url: "/dashboard/categories",
+      },
+      {
+        title: "L1 Subcategories",
+        url: "/dashboard/categories/subcategories",
+      },
+      {
+        title: "L2 Subcategories",
+        url: "/dashboard/categories/subsubcategories",
+      },
+    ],
+  },
+  {
     title: "Suppliers",
     url: "/dashboard/suppliers",
     icon: BookUser,

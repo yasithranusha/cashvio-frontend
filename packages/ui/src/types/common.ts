@@ -15,3 +15,15 @@ export type ActionResponse = {
   data?: any;
   error?: string;
 };
+
+export enum ProductStatus {
+  ACTIVE = "ACTIVE",
+  HIDE = "HIDE",
+}
+
+export const S3_FOLDERS = {
+  ASSETS: "assets",
+  IMAGES: "images",
+} as const;
+
+export type S3FolderType = (typeof S3_FOLDERS)[keyof typeof S3_FOLDERS];

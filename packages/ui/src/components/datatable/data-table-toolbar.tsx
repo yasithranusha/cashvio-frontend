@@ -39,10 +39,8 @@ export function DataTableToolbar<TData>({
     const value = event.target.value;
     setSearchValue(value);
     
-    // ONLY set the global filter - don't try to set individual column filters
     table.setGlobalFilter(value);
     
-    // Clear any column-specific filters that might interfere with search
     if (value && Array.isArray(searchColumn)) {
       searchColumn.forEach(colId => {
         const column = table.getColumn(colId);

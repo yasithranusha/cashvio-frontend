@@ -35,8 +35,8 @@ export function AppSidebar({ user, selectedShopId, className, ...props }: AppSid
         <div className="w-full flex justify-center items-center py-3">
           <Image
             alt={BRAND.name}
-            height={100}
-            width={200}
+            height={50}
+            width={100}
             src={open ? BRAND?.logo || BRAND.mobilelogo : BRAND.mobilelogo}
             className={`object-contain dark:invert`}
           />
