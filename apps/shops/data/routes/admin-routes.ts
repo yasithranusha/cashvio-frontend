@@ -13,6 +13,7 @@ import {
   LayoutDashboard,
   Users,
   BookUser,
+  Package,
 } from "lucide-react";
 
 export interface IBaseMenuItem {
@@ -55,6 +56,11 @@ const navMain: IMenueItem[] = [
         url: "/dashboard/settings",
       },
     ],
+  },
+  {
+    title: "Products",
+    url: "/dashboard/products",
+    icon: Package,
   },
   {
     title: "Categories",

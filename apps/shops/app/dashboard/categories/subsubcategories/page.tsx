@@ -4,6 +4,7 @@ import { CategoryDialog } from "@/components/categories/dialog/category-dialog";
 
 import { Metadata } from "next";
 import CategoryTable from "@/components/categories/category-table";
+import { TCategory, TSubCategory } from "@workspace/ui/types/categories";
 export const metadata: Metadata = {
   title: "L2 Sub Category | Cashvio",
   description:
@@ -24,6 +25,9 @@ export default async function CategoryPage() {
   const categoriesData = await getCategories(selectedShopId, "subsub");
   const mainCategoriesData = await getCategories(selectedShopId);
   const subcategoriesData = await getCategories(selectedShopId, "sub");
+
+  const mainCategories = (mainCategoriesData?.data?.data as TCategory[]) || [];
+  const subCategories = (subcategoriesData?.data?.data as TSubCategory[]) || [];
 
   const categoryFilters = [
     {
@@ -61,7 +65,7 @@ export default async function CategoryPage() {
         <CategoryDialog
           shopId={selectedShopId}
           type="subsub"
-          subCategories={subcategoriesData.data?.data}
+          subCategories={subCategories}
           disableTrigger={subcategoriesData.data?.data.length === 0}
           title={
             subcategoriesData.data?.data.length === 0
@@ -71,7 +75,7 @@ export default async function CategoryPage() {
         />
       </div>
       <CategoryTable
-        data={categoriesData?.data?.data || []}
+        data={mainCategories}
         categoryType="subsub"
         filters={categoryFilters}
         searchColumn={["name", "description"]}

@@ -57,7 +57,7 @@ interface CategoryFormProps {
   s3Path?: string;
   type?: CategoryType;
   mainCategories?: TCategory[];
-  subCategories?: TCategory[];
+  subCategories?: TSubCategory[];
 }
 
 export default function CategoryForm({

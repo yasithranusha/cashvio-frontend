@@ -1,12 +1,10 @@
 import { getCategories } from "@/actions/category";
-import { columns } from "@/components/categories/datatable/categories-columns";
-import { DataTable } from "@workspace/ui/components/datatable/datatable";
 import { getSelectedShopId } from "@/lib/shop";
 import { CategoryDialog } from "@/components/categories/dialog/category-dialog";
 
 import { Metadata } from "next";
-import { ProductStatus } from "@workspace/ui/types/common";
 import CategoryTable from "@/components/categories/category-table";
+import { TCategory } from "@workspace/ui/types/categories";
 export const metadata: Metadata = {
   title: "Categories | Cashvio",
   description:
@@ -25,6 +23,7 @@ export default async function CategoryPage() {
   }
 
   const categoriesData = await getCategories(selectedShopId);
+  const mainCategories = (categoriesData?.data?.data as TCategory[]) || [];
 
   if (categoriesData.error) {
     return (
@@ -38,10 +37,10 @@ export default async function CategoryPage() {
     <div className="container mx-auto py-10 space-y-5">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold">Categories</h2>
-        <CategoryDialog shopId={selectedShopId} type="main"/>
+        <CategoryDialog shopId={selectedShopId} type="main" />
       </div>
       <CategoryTable
-        data={categoriesData?.data?.data || []}
+        data={mainCategories}
         categoryType="main"
         searchColumn={["name", "description"]}
         searchPlaceholder="Search by name or description"

@@ -3,7 +3,11 @@
 import { axiosClient } from "@/lib/customAxios";
 import { BACKEND_URL } from "@/lib/constants";
 import axios from "axios";
-import { TCategoryResponse } from "@workspace/ui/types/categories";
+import {
+  TCategoryResponse,
+  TSubCategoryResponse,
+  TSubSubCategoryResponse,
+} from "@workspace/ui/types/categories";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
@@ -17,7 +21,6 @@ import {
 import { ActionResponse } from "@workspace/ui/types/common";
 
 export type CategoryType = "main" | "sub" | "subsub";
-
 
 function getCategoryEndpoint(type: CategoryType = "main") {
   switch (type) {
@@ -33,17 +36,33 @@ function getCategoryEndpoint(type: CategoryType = "main") {
 
 export async function getCategories(
   storeId: string,
-  type: CategoryType = "main",
+  type: CategoryType = "main"
 ) {
   try {
     let url = `${getCategoryEndpoint(type)}/${storeId}`;
 
-
-    const response = await axiosClient.get<TCategoryResponse>(url);
-    return {
-      data: response.data,
-      success: true,
-    };
+    switch (type) {
+      case "sub":
+        const subResponse = await axiosClient.get<TSubCategoryResponse>(url);
+        return {
+          data: subResponse.data,
+          success: true,
+        };
+      case "subsub":
+        const subsubResponse =
+          await axiosClient.get<TSubSubCategoryResponse>(url);
+        return {
+          data: subsubResponse.data,
+          success: true,
+        };
+      case "main":
+      default:
+        const mainResponse = await axiosClient.get<TCategoryResponse>(url);
+        return {
+          data: mainResponse.data,
+          success: true,
+        };
+    }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return {

@@ -20,7 +20,7 @@ interface CategoryDialogProps {
   shopId?: string;
   type?: CategoryType;
   mainCategories?: TCategory[];
-  subCategories?: TCategory[];
+  subCategories?: TSubCategory[];
   disableTrigger?: boolean;
   title?: string;
 }

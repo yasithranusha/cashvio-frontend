@@ -43,6 +43,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   searchColumn?: string | string[];
   searchPlaceholder?: string;
+  seperateFilters?: boolean;
   filters?: Array<{
     title: string;
     filterKey: string;
@@ -59,6 +60,7 @@ export function DataTable<TData, TValue>({
   data,
   searchColumn = "title",
   searchPlaceholder = "Search",
+  seperateFilters = false,
   filters = [],
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
@@ -179,6 +181,7 @@ export function DataTable<TData, TValue>({
 return (
   <div className="space-y-4 w-full max-w-[calc(100vw-2rem)]">
     <DataTableToolbar
+      seperateFilters={seperateFilters}
       table={table}
       searchColumn={searchColumn}
       searchPlaceholder={searchPlaceholder}

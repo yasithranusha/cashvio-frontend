@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProductStatus } from "../types/common.js";
+import { ProductStatus } from "@workspace/ui/types/common";
 
 export const CategorySchema = z.object({
   name: z.string().min(1, "Category name is required"),

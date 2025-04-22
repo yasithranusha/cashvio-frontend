@@ -8,7 +8,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Suppliers | Cashvio",
   description:
-    "cashvio is a modern and powerful posst system for your business to manage your sales and inventory.",
+    "cashvio is a modern and powerful poss system for your business to manage your sales and inventory.",
 };
 
 export default async function SupplierPage() {
