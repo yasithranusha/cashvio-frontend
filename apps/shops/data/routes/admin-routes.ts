@@ -14,6 +14,7 @@ import {
   Users,
   BookUser,
   Package,
+  Package2,
 } from "lucide-react";
 
 export interface IBaseMenuItem {
@@ -46,21 +47,17 @@ const navMain: IMenueItem[] = [
         url: "/dashboard/overview",
         icon: HistoryIcon,
       },
-      {
-        title: "Activity",
-        url: "/dashboard/activity",
-        icon: ListStartIcon,
-      },
-      {
-        title: "Settings",
-        url: "/dashboard/settings",
-      },
     ],
   },
   {
     title: "Products",
     url: "/dashboard/products",
-    icon: Package,
+    icon: Package2,
+  },
+  {
+    title: "Stock",
+    url: "/dashboard/stock",
+    icon: ListStartIcon,
   },
   {
     title: "Categories",
