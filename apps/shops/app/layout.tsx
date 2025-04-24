@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="!scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased overflow-y-hidden`}
+        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased overflow-y-visible`}
       >
         <Providers>{children}</Providers>
         <Toaster richColors />
