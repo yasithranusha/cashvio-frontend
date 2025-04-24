@@ -32,6 +32,30 @@ export async function getProducts(shopId: string) {
   }
 }
 
+export async function getProductById(productId: string): Promise<ActionResponse> {
+  try {
+    const response = await axiosClient.get(
+      `${BACKEND_URL}/stock/products/${productId}`
+    );
+    
+    return {
+      data: response.data,
+      success: true,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        error: error.response?.data?.message || "Failed to fetch product details",
+        success: false,
+      };
+    }
+    return {
+      error: "Unknown error occurred while fetching product",
+      success: false,
+    };
+  }
+}
+
 export async function createProduct(
   data: z.infer<typeof ProductSchema>
 ): Promise<ActionResponse> {
