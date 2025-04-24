@@ -12,7 +12,7 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
 
   const session = await getSession();
   const selectedShopId = await getSelectedShopId();
@@ -29,11 +29,11 @@ export default async function Layout({
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <div className="flex h-screen w-screen overflow-hidden">
+      <div className="flex h-screen w-screen">
         <AppSidebar user={user} selectedShopId={selectedShopId} />
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col ">
           <AdminHeaderContent role={user.role} />
-          <div className="flex-1 overflow-auto p-4">
+          <div className="flex-1 mx-4 max-w-[calc(100vw-18rem)]">
             <div className="container mx-auto">{children}</div>
           </div>
         </div>

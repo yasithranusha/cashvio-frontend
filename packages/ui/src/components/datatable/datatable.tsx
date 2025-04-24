@@ -43,6 +43,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   searchColumn?: string | string[];
   searchPlaceholder?: string;
+  seperateFilters?: boolean;
   filters?: Array<{
     title: string;
     filterKey: string;
@@ -59,6 +60,7 @@ export function DataTable<TData, TValue>({
   data,
   searchColumn = "title",
   searchPlaceholder = "Search",
+  seperateFilters = false,
   filters = [],
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
@@ -70,15 +72,15 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState<string>("");
 
-    // Replace the customGlobalFilterFn with this simpler version:
-  
+  // Replace the customGlobalFilterFn with this simpler version:
+
   const customGlobalFilterFn: FilterFn<any> = React.useCallback(
     (row, columnId, filterValue) => {
       // Skip filtering if no filter value
       if (!filterValue || typeof filterValue !== "string") return true;
-  
+
       const filterValueLower = filterValue.toLowerCase();
-  
+
       // Search across multiple columns if provided
       if (Array.isArray(searchColumn)) {
         // Try to find a match in any of the specified columns
@@ -86,10 +88,12 @@ export function DataTable<TData, TValue>({
           try {
             // Try to safely get the value
             const value = row.getValue(colId);
-            
+
             // If value exists and contains the search string, return true
-            if (value != null && 
-                String(value).toLowerCase().includes(filterValueLower)) {
+            if (
+              value != null &&
+              String(value).toLowerCase().includes(filterValueLower)
+            ) {
               return true;
             }
           } catch (e) {
@@ -99,23 +103,27 @@ export function DataTable<TData, TValue>({
         }
         // No match found in any column
         return false;
-      } 
+      }
       // Search in a single column
       else if (typeof searchColumn === "string") {
         try {
           const value = row.getValue(searchColumn);
-          return value != null && 
-            String(value).toLowerCase().includes(filterValueLower);
+          return (
+            value != null &&
+            String(value).toLowerCase().includes(filterValueLower)
+          );
         } catch (e) {
           return false;
         }
       }
-      
+
       // If no searchColumn is specified, fall back to the column being filtered
       try {
         const value = row.getValue(columnId);
-        return value != null && 
-          String(value).toLowerCase().includes(filterValueLower);
+        return (
+          value != null &&
+          String(value).toLowerCase().includes(filterValueLower)
+        );
       } catch (e) {
         return false;
       }
@@ -171,14 +179,15 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full ">
       <DataTableToolbar
+        seperateFilters={seperateFilters}
         table={table}
         searchColumn={searchColumn}
         searchPlaceholder={searchPlaceholder}
         filters={filters}
       />
-      <div className="rounded-md border">
+      <div className="overflow-auto rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

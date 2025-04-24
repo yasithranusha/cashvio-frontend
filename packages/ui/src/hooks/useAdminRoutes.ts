@@ -24,16 +24,29 @@ export const useAdminRoutes = (
     }
   }
 
+  // Find the best matching top-level route (pathOne)
   const pathOne = availableRoutes.find((route: IMenueItem) =>
     pathname.startsWith(route.url)
   );
 
-  const pathTwo = pathOne?.items?.length
-    ? pathOne.items.find(
-        (route: ISubMenuItem) =>
-          pathname === route.url || pathname.startsWith(route.url)
-      )
-    : undefined;
+  if (!pathOne?.items?.length) {
+    return { pathOne, pathTwo: undefined };
+  }
 
-  return { pathOne, pathTwo };
+  // For nested paths, search through the items for matches
+  // We need to find the most specific match within the submenu items
+  let bestMatch: ISubMenuItem | undefined = undefined;
+  let bestMatchLength = 0;
+
+  for (const item of pathOne.items) {
+    if (pathname === item.url || pathname.startsWith(item.url)) {
+      const matchLength = item.url.length;
+      if (matchLength > bestMatchLength) {
+        bestMatch = item;
+        bestMatchLength = matchLength;
+      }
+    }
+  }
+
+  return { pathOne, pathTwo: bestMatch };
 };
