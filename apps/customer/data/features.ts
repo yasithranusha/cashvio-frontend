@@ -1,61 +1,23 @@
-import { BarChart3, BadgePercent, CreditCard } from "lucide-react";
+import { PackageCheck, ShieldCheck, Wallet } from "lucide-react";
 
 export const features = [
   {
-    icon: BarChart3,
-    title: "Cashflow Analytics",
+    icon: PackageCheck,
+    title: "Order Tracking",
     description:
-      "Gain valuable insights into your business's financial health with comprehensive cashflow analysis and visualization tools.",
+      "See all your purchases in one place, with easy access to order details, tracking information",
   },
   {
-    icon: CreditCard,
-    title: "Seamless Transactions",
+    icon: ShieldCheck,
+    title: "Warranty Management",
     description:
-      "Process sales quickly and efficiently with an intuitive interface designed for speed and accuracy at the point of sale.",
+      "Never miss a warranty again. Keep track of how long items are covered and get notified before they expire.",
   },
   {
-    icon: BadgePercent,
-    title: "Customer Loyalty Program",
+    icon: Wallet,
+    title: "Wallet for Each shop",
     description:
-      "Build customer retention with a powerful loyalty program that offers rewards, points tracking, and personalized promotions.",
+      "Keep your changes in wallet and use them to pay for your next purchase. No more fumbling with cash or cards.",
   },
 ];
 
-export const freePlan = {
-  name: "Free",
-  price: "$0 / mo",
-  description: "Perfect for small businesses",
-  href: "/signup",
-  buttonText: "Get Started",
-  features: [
-    "Basic POS System",
-    "Inventory Tracking",
-    "Customer Management",
-    "Employee Management",
-
-    "Sales Analytics Dashboard",
-    "Payment Reminders & Scheduling",
-    "Basic Sales Reports",
-    "Role-Based Access Control",
-    "Email Support",
-  ],
-};
-
-export const proPlan = {
-  name: "Pro",
-  price: "$29 / mo",
-  description: "For growing businesses",
-  href: "#",
-  buttonText: "Join Waitlist",
-  comingSoon: true,
-  features: [
-    "Advanced Cashflow Analytics",
-    "Customer Loyalty Program",
-    "Multiple Branch Management",
-    "Advanced Sales Reports",
-    "API Access to build your E-commerce",
-    "Multi-Currency Support",
-    "Advanced Inventory Management",
-    "Priority Support",
-  ],
-};

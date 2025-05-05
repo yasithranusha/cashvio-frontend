@@ -33,12 +33,11 @@ export default function HeroSection() {
           <div className="text-center sm:mx-auto lg:mr-auto lg:mt-0">
             <AnimatedGroup variants={transitionVariants}>
               <Link
-                href="#link"
+                href="https://cashvio-shop.vercel.app/"
                 className="hover:bg-background dark:hover:border-t-border bg-muted group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md shadow-zinc-950/5 transition-colors duration-300 dark:border-t-white/5 dark:shadow-zinc-950"
               >
                 <span className="text-foreground text-sm">
-                  Pro subscription with advanced analytics coming soon! Join the
-                  waitlist
+                  Own a shop? Manage your sales with CASHVIO
                 </span>
                 <span className="dark:border-background block h-4 w-0.5 border-l bg-white dark:bg-zinc-700"></span>
 
@@ -61,7 +60,7 @@ export default function HeroSection() {
               as="h1"
               className="mt-8 text-balance text-6xl md:text-7xl lg:mt-16 xl:text-[5.25rem]"
             >
-              Revolutionize Your Business With CASHVIO
+              Your Shopping. Tracked and Simplified.
             </TextEffect>
             <TextEffect
               per="line"
@@ -71,8 +70,7 @@ export default function HeroSection() {
               as="p"
               className="mx-auto mt-8 max-w-2xl text-balance text-lg"
             >
-              Gain valuable insights about your sales and comprehensive tools to
-              manage your business properly with our cloud-based POS system.
+              Track your orders, monitor warrenties, view loyalty rewards, and stay updated on due amounts. All in one place.
             </TextEffect>
 
             <AnimatedGroup
