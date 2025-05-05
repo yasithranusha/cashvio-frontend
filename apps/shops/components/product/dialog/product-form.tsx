@@ -100,6 +100,7 @@ export default function ProductForm({
     categoryId: initialData?.categoryId || "",
     subCategoryId: initialData?.subCategoryId || "",
     subSubCategoryId: initialData?.subSubCategoryId || "",
+    warrantyMonths: initialData?.warrantyMonths || 0,
   };
 
   const form = useForm<z.infer<typeof ProductSchema>>({
@@ -275,6 +276,32 @@ export default function ProductForm({
               </FormControl>
               <FormDescription>
                 Enter the current stock quantity
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="warrantyMonths"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Warranty (Months)</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  min="0"
+                  step="1"
+                  {...field}
+                  value={field.value}
+                  onChange={(e) =>
+                    field.onChange(parseInt(e.target.value) || 0)
+                  }
+                />
+              </FormControl>
+              <FormDescription>
+                Enter the warranty period in months (optional)
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -40,6 +40,7 @@ export type TProduct = {
   status: TProductStatus;
   shopId: string;
   supplierId: string;
+  warrantyMonths: number;
   categoryId: string;
   subCategoryId: string;
   subSubCategoryId: string;
