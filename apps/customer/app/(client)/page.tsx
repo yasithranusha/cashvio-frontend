@@ -1,5 +1,4 @@
 import FeaturesSection from "@/components/client/landing/feature/feature-section";
-import PricingSection from "@/components/client/landing/pricing/pricing";
 import TestimonialsSection from "@/components/client/landing/customers/testimonials";
 import HeroSection from "@/components/client/landing/hero/hero-section";
 
@@ -18,7 +17,6 @@ export default function HomePage() {
         <div className="space-y-28 pt-24 md:pt-36 pb-24 md:pb-28">
           <HeroSection />
           <FeaturesSection />
-          <PricingSection />
           <TestimonialsSection />
         </div>
       </main>

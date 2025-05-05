@@ -14,10 +14,6 @@ export const clientRoutes: IClientRoute[] = [
     url: "#customers",
   },
   {
-    title: "Pricing",
-    url: "#pricing",
-  },
-  {
     title: "Help",
     url: "#",
     showOnlyOn: "footer",

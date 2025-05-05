@@ -7,45 +7,45 @@ type Testimonial = {
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Sarah Johnson",
-    business: "The Coffee Corner",
+    name: "Chamari Perera",
+    business: "Regular Shopper",
     image: "https://randomuser.me/api/portraits/women/45.jpg",
     quote:
-      "As a small café owner with no financial background, Cashvio has been a game-changer. I can now track sales patterns and make better inventory decisions without spending hours on spreadsheets.",
+      "Cashvio has transformed how I shop in Colombo. The order tracking feature lets me see all my purchases in one place, and I never have to search through texts or receipts for warranty information anymore.",
   },
   {
-    name: "Michael Chen",
-    business: "Urban Boutique",
+    name: "Dinesh Jayawardena",
+    business: "Tech Enthusiast",
     image: "https://randomuser.me/api/portraits/men/32.jpg",
     quote:
-      "The analytics dashboard helps me understand my business in ways I never could before. Our seasonal inventory planning has improved dramatically, and sales are up 22% since we started using Cashvio.",
+      "As someone who buys electronics at Unity Plaza, the warranty management feature is a lifesaver. I get notifications before warranties expire, which has saved me thousands of rupees on repairs I might have paid for.",
   },
   {
-    name: "Amara Rodriguez",
-    business: "Sunshine Bakery",
+    name: "Amaya Fernando",
+    business: "Fashion Lover",
     image: "https://randomuser.me/api/portraits/women/68.jpg",
     quote:
-      "Before Cashvio, I was always anxious about managing payments and tracking finances. Now I can focus on baking while the system handles the numbers. The loyalty program has brought back so many customers!",
+      "The shop wallet feature is brilliant! I love that my store credit at Odel and Cotton Collection is automatically saved for future purchases. Shopping at my favorite boutiques in Colombo has never been more convenient.",
   },
   {
-    name: "David Okafor",
-    business: "Tech Repair Shop",
+    name: "Rohan De Silva",
+    business: "Smart Shopper",
     image: "https://randomuser.me/api/portraits/men/22.jpg",
     quote:
-      "Running multiple repair locations was a nightmare until we found Cashvio. Now we can see inventory and sales across all shops in one place. The role-based access means my staff only sees what they need to.",
+      "Tracking my payment dues at different stores in Kandy used to be complicated. Now with Cashvio's wallet feature, I can see exactly what I owe and when it's due. No more missed payments or late fees!",
   },
   {
-    name: "Lisa Patel",
-    business: "Wellness Studio",
+    name: "Priyanka Gunaratne",
+    business: "Busy Parent",
     image: "https://randomuser.me/api/portraits/women/89.jpg",
     quote:
-      "As someone who dreaded anything finance-related, I love how Cashvio makes managing my studio's finances approachable. The payment reminders have completely eliminated our late payment issues.",
+      "With kids and working in Nugegoda, keeping track of orders from different shops was impossible before Cashvio. Now I can see all my purchases, track store pickups, and manage warranties in one simple app.",
   },
   {
-    name: "Carlos Mendez",
-    business: "Family Restaurant",
+    name: "Nuwan Bandara",
+    business: "Household Manager",
     image: "https://randomuser.me/api/portraits/men/75.jpg",
     quote:
-      "Our family restaurant has been around for 15 years, but we never had proper financial insights until now. Cashvio helped us identify our most profitable items and optimize our menu, increasing our profits without raising prices.",
+      "Managing purchases at Keells, Arpico, and Singer has completely changed with Cashvio. I can track all my balances and pending installment payments across different shops - no more forgetting what I owe where!",
   },
 ];
