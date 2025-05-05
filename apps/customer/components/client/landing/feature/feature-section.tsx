@@ -9,11 +9,10 @@ export default function FeaturesSection() {
       <div className="@container mx-auto max-w-5xl px-6">
         <div className="text-center">
           <h2 className="text-balance text-4xl font-semibold lg:text-5xl">
-            Built to cover your needs
+          Made for Shoppers Who Want to Stay in Control
           </h2>
           <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-            Our comprehensive point-of-sale system helps businesses streamline operations, 
-            analyze sales data, and boost customer satisfaction with powerful, easy-to-use tools.
+            All your purchases info, rewards and warranties always up to date and easy to find.
           </p>
         </div>
         <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-6 *:text-center md:mt-16">
