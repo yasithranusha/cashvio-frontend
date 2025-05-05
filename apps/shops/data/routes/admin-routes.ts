@@ -3,18 +3,15 @@ import { Role } from "@workspace/ui/enum/user.enum";
 import { TlinkTarget } from "@workspace/ui/types/common";
 import {
   type LucideIcon as TLucideIcon,
-  HistoryIcon,
   ListStartIcon,
-  Frame,
   Folder,
-  Forward,
-  Trash2,
   PieChart,
   LayoutDashboard,
   Users,
   BookUser,
   Package,
   Package2,
+  LifeBuoy,
 } from "lucide-react";
 
 export interface IBaseMenuItem {
@@ -41,11 +38,19 @@ const navMain: IMenueItem[] = [
     title: "Dashboard",
     url: "/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Orders",
+    url: "/dashboard/orders",
+    icon: Package,
     items: [
       {
-        title: "Overview",
-        url: "/dashboard/overview",
-        icon: HistoryIcon,
+        title: "Order History",
+        url: "/dashboard/orders",
+      },
+      {
+        title: "Create Order",
+        url: "/dashboard/orders/create",
       },
     ],
   },
@@ -53,6 +58,13 @@ const navMain: IMenueItem[] = [
     title: "Products",
     url: "/dashboard/products",
     icon: Package2,
+    items: [
+      {
+        title: "Products",
+        url: "/dashboard/products",
+      },
+      { title: "Discounts", url: "/dashboard/products/discounts" },
+    ],
   },
   {
     title: "Stock",
@@ -84,85 +96,27 @@ const navMain: IMenueItem[] = [
     icon: BookUser,
   },
   {
+    title: "Cash Flow",
+    url: "/dashboard/cashflow",
+    icon: PieChart,
+  },
+  {
     title: "Users",
     url: "/users",
     icon: Users,
     onlyForRoles: [Role.SHOP_OWNER],
+  },
+  {
+    title: "Support",
+    url: "/support",
+    icon: LifeBuoy,
   },
 ];
 
 /**
  * An array of routes showing in admin sidebar as Dropdown menu
  */
-const projects: IMenueItem[] = [
-  {
-    title: "Design Engineering",
-    url: "/design",
-    icon: Frame,
-    items: [
-      {
-        title: "View Project",
-        url: "/design/view",
-        icon: Folder,
-      },
-      {
-        title: "Share Project",
-        url: "/design/share",
-        icon: Forward,
-        seperator: true,
-      },
-      {
-        title: "Delete Project",
-        url: "/design/delete",
-        icon: Trash2,
-      },
-    ],
-  },
-  {
-    title: "Sales & Marketing",
-    url: "/sales",
-    icon: PieChart,
-    items: [
-      {
-        title: "View Project",
-        url: "/sales/view",
-        icon: Folder,
-      },
-      {
-        title: "Share Project",
-        url: "/sales/share",
-        icon: Forward,
-      },
-      {
-        title: "Delete Project",
-        url: "/sales/delete",
-        icon: Trash2,
-      },
-    ],
-  },
-  {
-    title: "Sales & Marketing 2",
-    url: "/sales2",
-    icon: PieChart,
-    items: [
-      {
-        title: "View Project 2",
-        url: "/sales2/view",
-        icon: Folder,
-      },
-      {
-        title: "Share Project 2",
-        url: "/sales2/share",
-        icon: Forward,
-      },
-      {
-        title: "Delete Project 2",
-        url: "/sales2/delete",
-        icon: Trash2,
-      },
-    ],
-  },
-];
+const projects: IMenueItem[] = [];
 
 export function availableNavMainRoutes(role: Role | undefined) {
   return getAvailableRoutesForRole({
