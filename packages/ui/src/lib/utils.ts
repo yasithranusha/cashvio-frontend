@@ -11,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 export function formatPrice(price: number): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD', // Change this to your preferred currency
+    currency: 'LKR', 
     minimumFractionDigits: 2
   }).format(price);
 }
