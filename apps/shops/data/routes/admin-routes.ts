@@ -102,13 +102,13 @@ const navMain: IMenueItem[] = [
   },
   {
     title: "Users",
-    url: "/users",
+    url: "/dashboard/users",
     icon: Users,
     onlyForRoles: [Role.SHOP_OWNER],
   },
   {
     title: "Support",
-    url: "/support",
+    url: "/dashboard/support",
     icon: LifeBuoy,
   },
 ];
