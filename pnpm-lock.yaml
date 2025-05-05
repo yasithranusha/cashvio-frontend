@@ -26,9 +26,6 @@ importers:
       react-is:
         specifier: 19.0.0-rc-6f23540c7d-20240528
         version: 19.0.0-rc-6f23540c7d-20240528
-      recharts:
-        specifier: ^2.15.3
-        version: 2.15.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       sonner:
         specifier: ^2.0.2
         version: 2.0.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -118,6 +115,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.0.0(react@19.0.0)
+      recharts:
+        specifier: ^2.15.3
+        version: 2.15.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
     devDependencies:
       '@types/node':
         specifier: ^20

@@ -4,6 +4,7 @@ import { TlinkTarget } from "@workspace/ui/types/common";
 import {
   type LucideIcon as TLucideIcon,
   LayoutDashboard,
+  LifeBuoy,
   LineChart,
   UserCog,
   Users,
@@ -38,6 +39,11 @@ const navMain: IMenueItem[] = [
     title: "Users",
     url: "/users",
     icon: Users,
+  },
+  {
+    title: "Support Requests",
+    url: "/support",
+    icon: LifeBuoy,
   },
   {
     title: "Admin Users",
