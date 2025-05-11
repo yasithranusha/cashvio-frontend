@@ -2,10 +2,12 @@
 
 import { DataTable } from "@workspace/ui/components/datatable/datatable";
 import { columns, CategoryType } from "./datatable/categories-columns";
-import { TCategory } from "@workspace/ui/types/categories";
+import {
+  TCategoryUnion,
+} from "@workspace/ui/types/categories";
 import { ProductStatus } from "@workspace/ui/types/common";
 
-interface CategoryTableProps<TData = TCategory> {
+interface CategoryTableProps<TData extends TCategoryUnion = TCategoryUnion> {
   data: TData[];
   categoryType?: CategoryType;
   searchColumn?: string | string[];
@@ -21,13 +23,13 @@ interface CategoryTableProps<TData = TCategory> {
   }>;
 }
 
-export default function CategoryTable({
+export default function CategoryTable<TData extends TCategoryUnion = TCategoryUnion>({
   data,
   categoryType = "main",
   searchColumn = ["name", "description"],
   searchPlaceholder = "Search by name or description",
   filters = [],
-}: CategoryTableProps) {
+}: CategoryTableProps<TData>) {
   const defaultFilters = [
     {
       title: "Status",
