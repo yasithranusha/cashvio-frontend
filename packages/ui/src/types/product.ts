@@ -41,6 +41,7 @@ export type TProduct = {
   shopId: string;
   supplierId: string;
   warrantyMonths: number;
+  loyaltyPoints: number;
   categoryId: string;
   subCategoryId: string;
   subSubCategoryId: string;
@@ -53,6 +54,7 @@ export type TProduct = {
   _count?: {
     items: number;
   };
+  stock: number;
 };
 
 // Using the generic paginated response from common.ts

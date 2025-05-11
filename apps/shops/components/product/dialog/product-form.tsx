@@ -13,6 +13,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  RequiredStar,
 } from "@workspace/ui/components/form";
 import { Input } from "@workspace/ui/components/input";
 import {
@@ -101,6 +102,7 @@ export default function ProductForm({
     subCategoryId: initialData?.subCategoryId || "",
     subSubCategoryId: initialData?.subSubCategoryId || "",
     warrantyMonths: initialData?.warrantyMonths || 0,
+    loyaltyPoints: initialData?.loyaltyPoints || 0,
   };
 
   const form = useForm<z.infer<typeof ProductSchema>>({
@@ -206,9 +208,11 @@ export default function ProductForm({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Product Name</FormLabel>
+              <FormLabel>
+                Product Name <RequiredStar />
+              </FormLabel>
               <FormControl>
-                <Input placeholder="iPhone 14 Pro" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
                 Enter the product's internal name
@@ -223,12 +227,14 @@ export default function ProductForm({
           name="displayName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Display Name</FormLabel>
+              <FormLabel>
+                Display Name <RequiredStar />
+              </FormLabel>
               <FormControl>
-                <Input placeholder="iPhone 14 Pro (128GB)" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
-                Enter the product's display name shown to customers
+                Enter the product's display name to shown on Bills
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -242,11 +248,7 @@ export default function ProductForm({
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="A brief description of the product"
-                  {...field}
-                  value={field.value || ""}
-                />
+                <Textarea {...field} value={field.value || ""} />
               </FormControl>
               <FormDescription>
                 Provide details about the product
@@ -261,7 +263,9 @@ export default function ProductForm({
           name="keepingUnits"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Stock Quantity</FormLabel>
+              <FormLabel>
+                Stock Keeping Units <RequiredStar />
+              </FormLabel>
               <FormControl>
                 <Input
                   type="number"
@@ -281,32 +285,59 @@ export default function ProductForm({
             </FormItem>
           )}
         />
+        <div className="grid grid-cols-2 gap-2">
+          <FormField
+            control={form.control}
+            name="warrantyMonths"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Warranty (Months)</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min="0"
+                    step="1"
+                    {...field}
+                    value={field.value}
+                    onChange={(e) =>
+                      field.onChange(parseInt(e.target.value) || 0)
+                    }
+                  />
+                </FormControl>
+                <FormDescription>
+                  Enter the warranty period in months
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="warrantyMonths"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Warranty (Months)</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  min="0"
-                  step="1"
-                  {...field}
-                  value={field.value}
-                  onChange={(e) =>
-                    field.onChange(parseInt(e.target.value) || 0)
-                  }
-                />
-              </FormControl>
-              <FormDescription>
-                Enter the warranty period in months (optional)
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="loyaltyPoints"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Loyalty Points</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min="0"
+                    step="1"
+                    {...field}
+                    value={field.value}
+                    onChange={(e) =>
+                      field.onChange(parseInt(e.target.value) || 0)
+                    }
+                  />
+                </FormControl>
+                <FormDescription>
+                  Enter the loyalty points for this product
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
@@ -351,7 +382,9 @@ export default function ProductForm({
           name="status"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Status</FormLabel>
+              <FormLabel>
+                Status <RequiredStar />
+              </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
@@ -481,7 +514,7 @@ export default function ProductForm({
           name="subSubCategoryId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Sub-subcategory (Optional)</FormLabel>
+              <FormLabel>Sub-subcategory</FormLabel>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value || ""}
