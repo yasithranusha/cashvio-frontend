@@ -27,18 +27,9 @@ import { TProduct } from "@workspace/ui/types/product";
 import { TStockItem } from "@workspace/ui/types/stock";
 import { createStockItem, updateStockItem } from "@/actions/stock";
 import { Trash2, Plus } from "lucide-react";
+import { BatchStockFormSchema } from "@/schemas/stock";
 
 // Create a schema for the batch form
-const BatchStockFormSchema = z.object({
-  productId: z.string().uuid("Invalid product ID"),
-  broughtPrice: z.number().positive("Purchase price must be positive"),
-  sellPrice: z.number().positive("Sell price must be positive"),
-  items: z.array(
-    z.object({
-      barcode: z.string().min(1, "Barcode is required"),
-    })
-  ).min(1, "Add at least one item").max(20, "Maximum 20 items allowed"),
-});
 
 type BatchStockFormValues = z.infer<typeof BatchStockFormSchema>;
 

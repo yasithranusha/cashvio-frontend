@@ -6,7 +6,7 @@ import axios from "axios";
 import { TSupplierResponse } from "@/types/supplier";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { SupplierSchema } from "@/app/schemas/suppliers";
+import { SupplierSchema } from "@/schemas/suppliers";
 import { ActionResponse } from "@workspace/ui/types/common";
 
 export async function getSuppliers(storeId: string) {

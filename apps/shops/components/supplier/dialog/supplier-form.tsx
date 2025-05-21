@@ -18,7 +18,7 @@ import { Input } from "@workspace/ui/components/input";
 import { Checkbox } from "@workspace/ui/components/checkbox";
 import { useTransition } from "react";
 import { TSupplier } from "@/types/supplier";
-import { SupplierSchema } from "@/app/schemas/suppliers";
+import { SupplierSchema } from "@/schemas/suppliers";
 import { createSupplier, updateSupplier } from "@/actions/supplier";
 import { PhoneInput } from "@workspace/ui/components/phone-input";
 

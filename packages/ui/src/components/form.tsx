@@ -29,6 +29,12 @@ const FormFieldContext = React.createContext<FormFieldContextValue>(
   {} as FormFieldContextValue
 )
 
+export const RequiredStar = () => (
+  <span className="text-red-600 ml-1" title="Required">
+    *
+  </span>
+);
+
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,

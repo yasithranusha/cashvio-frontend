@@ -32,6 +32,7 @@ export default async function CategoryPage() {
       </div>
     );
   }
+  const categories = (categoriesData?.data?.data as TCategory[]) || [];
   const mainCategories = (mainCategoriesData?.data?.data as TCategory[]) || [];
 
   const mainCategoryFilters = [
@@ -63,7 +64,7 @@ export default async function CategoryPage() {
         />
       </div>
       <CategoryTable
-        data={mainCategories}
+        data={categories}
         filters={mainCategoryFilters}
         categoryType="sub"
         searchColumn={["name", "description"]}
