@@ -6,6 +6,7 @@ import { DataTableColumnHeader } from "@workspace/ui/components/datatable/datata
 import { TProduct } from "@workspace/ui/types/product";
 import Image from "next/image";
 import { Badge } from "@workspace/ui/components/badge";
+import Link from "next/link";
 
 export const columns: ColumnDef<TProduct>[] = [
   {
@@ -60,11 +61,39 @@ export const columns: ColumnDef<TProduct>[] = [
   {
     accessorKey: "keepingUnits",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Stock" />
+      <DataTableColumnHeader column={column} title="Stock Keeping Units" />
     ),
     cell: ({ row }) => {
       const keepingUnits = row.getValue("keepingUnits") as number;
       return <div className="text-center">{keepingUnits}</div>;
+    },
+  },
+  {
+    accessorKey: "stock",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Stock Remain" />
+    ),
+    cell: ({ row }) => {
+      const stock = (row.getValue("stock") as number) || 0;
+      const keepingUnits = row.getValue("keepingUnits") as number;
+      const isLowStock =
+        typeof stock === "number" &&
+        typeof keepingUnits === "number" &&
+        stock < keepingUnits;
+      return (
+        <div className="text-center">
+          <Link href={`/dashboard/stock/${row.original.id}`} title="View Stock">
+            <span className={isLowStock ? "text-red-600 font-bold" : undefined}>
+              {stock}
+            </span>
+            {isLowStock && (
+              <span className="ml-2 px-2 py-0.5 rounded bg-red-100 text-red-700 text-xs font-semibold">
+                Low
+              </span>
+            )}
+          </Link>
+        </div>
+      );
     },
   },
   {
@@ -106,6 +135,34 @@ export const columns: ColumnDef<TProduct>[] = [
           <Badge variant={status === "ACTIVE" ? "default" : "secondary"}>
             {status}
           </Badge>
+        </div>
+      );
+    },
+  },
+  {
+    id: "warrantyMonths",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Warranty" />
+    ),
+    cell: ({ row }) => {
+      const warrantyMonths = row.getValue("warrantyMonths") as number;
+      return (
+        <div className="text-center">
+          {warrantyMonths ? `${warrantyMonths} months` : "N/A"}
+        </div>
+      );
+    },
+  },
+  {
+    id: "loyaltyPoints",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Loyalty Points" />
+    ),
+    cell: ({ row }) => {
+      const loyaltyPoints = row.getValue("loyaltyPoints") as number;
+      return (
+        <div className="text-center">
+          {loyaltyPoints ? `${loyaltyPoints}` : `N/A`}
         </div>
       );
     },
