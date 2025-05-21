@@ -25,11 +25,7 @@ export const columns: ColumnDef<TStockItem>[] = [
     ),
     cell: ({ row }) => {
       const price = row.getValue("broughtPrice") as number;
-      return (
-        <div className="text-left">
-          {formatPrice(price)}
-        </div>
-      );
+      return <div className="text-left">{formatPrice(price)}</div>;
     },
   },
   {
@@ -39,11 +35,7 @@ export const columns: ColumnDef<TStockItem>[] = [
     ),
     cell: ({ row }) => {
       const price = row.getValue("sellPrice") as number;
-      return (
-        <div className="text-left font-medium">
-          {formatPrice(price)}
-        </div>
-      );
+      return <div className="text-left font-medium">{formatPrice(price)}</div>;
     },
   },
   {
@@ -55,13 +47,19 @@ export const columns: ColumnDef<TStockItem>[] = [
       const broughtPrice = row.getValue("broughtPrice") as number;
       const sellPrice = row.getValue("sellPrice") as number;
       const profit = sellPrice - broughtPrice;
-      const profitPercentage = ((profit / broughtPrice) * 100).toFixed(2);
-      
+      const profitPercentage = Number(
+        ((profit / broughtPrice) * 100).toFixed(2)
+      );
+
       return (
         <div className="text-left flex flex-col">
           <span>{formatPrice(profit)}</span>
-          <Badge variant={profit > 0 ? "default" : "destructive"} className="w-fit mt-1">
-            {profit > 0 ? "+" : ""}{profitPercentage}%
+          <Badge
+            variant={profit > 0 ? "default" : "destructive"}
+            className="w-fit mt-1"
+          >
+            {profit > 0 ? "+" : ""}
+            {profitPercentage}%
           </Badge>
         </div>
       );
