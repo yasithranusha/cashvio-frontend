@@ -211,7 +211,7 @@ export async function deleteUpcomingPayment(
   }
 }
 
-export async function getShopBaBalance(shopId: string) { 
+export async function getShopBaBalance(shopId: string) {
   try {
     const response = await axiosClient.get<ShopBalance>(
       `${BACKEND_URL}/order/shop-balance/${shopId}`
@@ -231,6 +231,34 @@ export async function getShopBaBalance(shopId: string) {
     return {
       success: false,
       error: "Failed to get shop balance",
+    };
+  }
+}
+
+export async function makePayment(paymentId: string): Promise<ActionResponse> {
+  try {
+    // Call the backend API to process the payment
+    const response = await axiosClient.put(
+      `${BACKEND_URL}/order/upcoming-payments/${paymentId}/pay`
+    );
+
+    // Revalidate the cashflow path to update the UI
+    revalidatePath("/dashboard/cashflow");
+
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Failed to process payment",
+      };
+    }
+    return {
+      success: false,
+      error: "Failed to process payment",
     };
   }
 }
