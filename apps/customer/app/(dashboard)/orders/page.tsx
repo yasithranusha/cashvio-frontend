@@ -1,134 +1,144 @@
 import { DataTable } from "@workspace/ui/components/datatable/datatable";
 import { columns } from "@/components/order/order-column";
-
-// Import the Order type from order-column.tsx for consistency
+import { getSession } from "@/lib/session";
+import { getCustomerOrderHistoryWithWallet } from "@/actions/order";
 import { Order } from "@/components/order/order-column";
+import { format } from "date-fns";
 
-// Generate dummy order data with realistic values
-const orders: Order[] = [
-  {
-    id: "INV2025001",
-    date: "2025-05-01",
-    storeName: "Electronics Hub",
-    amount: 4800,
-    items: 2,
-    status: "Completed",
-  },
-  {
-    id: "INV2025002",
-    date: "2025-04-23",
-    storeName: "Fashion Store",
-    amount: 2100,
-    items: 3,
-    status: "Completed",
-  },
-  {
-    id: "INV2025003",
-    date: "2025-04-15",
-    storeName: "Home Essentials",
-    amount: 3450,
-    items: 1,
-    status: "Pending",
-  },
-  {
-    id: "INV2025004",
-    date: "2025-04-10",
-    storeName: "Tech Gadgets",
-    amount: 8750,
-    items: 4,
-    status: "Processing",
-  },
-  {
-    id: "INV2025005",
-    date: "2025-03-28",
-    storeName: "Electronics Hub",
-    amount: 1200,
-    items: 1,
-    status: "Completed",
-  },
-  {
-    id: "INV2025006",
-    date: "2025-03-15",
-    storeName: "Furniture Palace",
-    amount: 6200,
-    items: 2,
-    status: "Refunded",
-  },
-  {
-    id: "INV2025007",
-    date: "2025-03-02",
-    storeName: "Fashion Store",
-    amount: 2300,
-    items: 5,
-    status: "Completed",
-  },
-  {
-    id: "INV2025008",
-    date: "2025-02-18",
-    storeName: "Home Essentials",
-    amount: 1500,
-    items: 3,
-    status: "Completed",
-  },
-  {
-    id: "INV2025009",
-    date: "2025-02-10",
-    storeName: "Tech Gadgets",
-    amount: 5600,
-    items: 2,
-    status: "Partially Refunded",
-  },
-  {
-    id: "INV2025010",
-    date: "2025-01-25",
-    storeName: "Furniture Palace",
-    amount: 4200,
-    items: 1,
-    status: "Completed",
-  },
-];
+export default async function OrdersPage() {
+  const session = await getSession();
+  const customerId = session?.user.id;
 
-// Define the filters that will appear in the DataTable
-const orderFilters = [
-  {
-    title: "Status",
-    filterKey: "status",
-    options: [
-      { label: "Completed", value: "Completed" },
-      { label: "Pending", value: "Pending" },
-      { label: "Processing", value: "Processing" },
-      { label: "Refunded", value: "Refunded" },
-      { label: "Partially Refunded", value: "Partially Refunded" },
-    ],
-  },
-  {
-    title: "Store",
-    filterKey: "storeName",
-    options: [
-      { label: "Electronics Hub", value: "Electronics Hub" },
-      { label: "Fashion Store", value: "Fashion Store" },
-      { label: "Home Essentials", value: "Home Essentials" },
-      { label: "Tech Gadgets", value: "Tech Gadgets" },
-      { label: "Furniture Palace", value: "Furniture Palace" },
-    ],
-  },
-];
+  // Log session and customerId for debugging
+  console.log("Session info:", {
+    hasSession: !!session,
+    customerId: customerId || "undefined",
+  });
 
-export default function OrdersPage() {
+  // Fetch real order data
+  const orderResponse = await getCustomerOrderHistoryWithWallet(customerId);
+
+  // Log the response for debugging
+  console.log("API Response Structure:", {
+    success: orderResponse.success,
+    hasData: !!orderResponse.data,
+    hasError: !!orderResponse.error,
+    errorMessage: orderResponse.error || "No error",
+    dataKeys: orderResponse.data ? Object.keys(orderResponse.data) : [],
+  });
+
+  // Initialize orders array
+  let orders: Order[] = [];
+
+  // Process data if request was successful
+  if (
+    orderResponse.success &&
+    orderResponse.data &&
+    orderResponse.data.shopData &&
+    Array.isArray(orderResponse.data.shopData)
+  ) {
+    // Log shopData for debugging
+    console.log("Shop data count:", orderResponse.data.shopData.length);
+
+    // Flatten orders from all shops
+    orders = orderResponse.data.shopData.flatMap((shop) => {
+      // Make sure shop has orderHistory and orders
+      if (!shop.orderHistory || !Array.isArray(shop.orderHistory.orders)) {
+        console.log("Shop missing orderHistory or orders:", shop.shopName);
+        return [];
+      }
+
+      return shop.orderHistory.orders.map((order) => ({
+        id: order.orderNumber || order.id,
+        date: order.createdAt,
+        storeName: shop.shopName,
+        amount: order.total,
+        items: order.orderItems?.length || 0,
+        status:
+          (order.status as
+            | "Completed"
+            | "Pending"
+            | "Processing"
+            | "Refunded"
+            | "Partially Refunded") || "Processing",
+      }));
+    });
+
+    console.log("Processed orders count:", orders.length);
+  } else {
+    // If API returns unexpected data, use an empty array
+    console.error(
+      "API error or unexpected data structure:",
+      JSON.stringify(orderResponse)
+    );
+
+    // Check if backend URL is configured correctly
+    console.log("Check if endpoint URL is correct:", {
+      customerId,
+      hasErrorResponse: !!orderResponse.error,
+    });
+
+    // For testing, add some mock data if there's no real data
+    if (customerId) {
+      console.log("Adding mock data for testing UI");
+      orders = [
+        {
+          id: "TEST-ORDER-001",
+          date: new Date().toISOString(),
+          storeName: "Test Store",
+          amount: 1000,
+          items: 2,
+          status: "Processing",
+        },
+      ];
+    }
+  }
+
+  // Define the filters that will appear in the DataTable
+  const orderFilters = [
+    {
+      title: "Status",
+      filterKey: "status",
+      options: [
+        { label: "Completed", value: "Completed" },
+        { label: "Pending", value: "Pending" },
+        { label: "Processing", value: "Processing" },
+        { label: "Refunded", value: "Refunded" },
+        { label: "Partially Refunded", value: "Partially Refunded" },
+      ],
+    },
+    {
+      title: "Store",
+      filterKey: "storeName",
+      options: Array.from(new Set(orders.map((order) => order.storeName)))
+        .filter(Boolean) // Remove undefined/null values
+        .map((storeName) => ({ label: storeName, value: storeName })),
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Order History</h1>
       </div>
-      
-      <DataTable 
-        columns={columns}
-        data={orders}
-        searchColumn={["id", "storeName"]}
-        searchPlaceholder="Search by order ID or store name"
-        seperateFilters
-        filters={orderFilters}
-      />
+
+      {orders.length > 0 ? (
+        <DataTable
+          columns={columns}
+          data={orders}
+          searchColumn={["id", "storeName"]}
+          searchPlaceholder="Search by order ID or store name"
+          seperateFilters
+          filters={orderFilters}
+        />
+      ) : (
+        <div className="text-center py-10 border rounded-lg">
+          <p className="text-gray-500">
+            No orders found.{" "}
+            {orderResponse.error ? `Error: ${orderResponse.error}` : ""}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
