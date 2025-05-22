@@ -3,7 +3,11 @@
 import { axiosClient } from "@/lib/customAxios";
 import { BACKEND_URL } from "@/lib/constants";
 import axios from "axios";
-import { TCustomerResponse, TProductResponse } from "@workspace/ui/types/order";
+import {
+  TCustomerResponse,
+  TOrdersResponse,
+  TProductResponse,
+} from "@workspace/ui/types/order";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { ActionResponse } from "@workspace/ui/types/common";
@@ -23,6 +27,30 @@ export async function getCustomers(shopId: string) {
     if (axios.isAxiosError(error)) {
       return {
         error: error.response?.data?.message || "Something went wrong",
+        success: false,
+      };
+    }
+    return {
+      error: "Unknown error occurred",
+      success: false,
+    };
+  }
+}
+
+export async function getOrders(shopId: string) {
+  try {
+    const url = `${BACKEND_URL}/order/orders?shopId=${shopId}`;
+
+    const response = await axiosClient.get<TOrdersResponse>(url);
+
+    return {
+      data: response.data,
+      success: true,
+    };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return {
+        error: error.response?.data?.message || "Failed to fetch orders",
         success: false,
       };
     }
