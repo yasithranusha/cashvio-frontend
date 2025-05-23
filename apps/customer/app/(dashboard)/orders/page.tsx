@@ -18,7 +18,8 @@ export default async function OrdersPage() {
   // Fetch real order data
   const orderResponse = await getCustomerOrderHistoryWithWallet(customerId);
 
-  // Log the response for debugging
+  // More detailed logging of the response
+  console.log("API Full Response:", JSON.stringify(orderResponse, null, 2));
   console.log("API Response Structure:", {
     success: orderResponse.success,
     hasData: !!orderResponse.data,
@@ -30,41 +31,46 @@ export default async function OrdersPage() {
   // Initialize orders array
   let orders: Order[] = [];
 
-  // Process data if request was successful
+  // Check if shopData exists and has content
   if (
-    orderResponse.success &&
     orderResponse.data &&
     orderResponse.data.shopData &&
     Array.isArray(orderResponse.data.shopData)
   ) {
-    // Log shopData for debugging
     console.log("Shop data count:", orderResponse.data.shopData.length);
+    console.log(
+      "First shop data:",
+      orderResponse.data.shopData[0] || "No shops"
+    );
 
-    // Flatten orders from all shops
-    orders = orderResponse.data.shopData.flatMap((shop) => {
-      // Make sure shop has orderHistory and orders
-      if (!shop.orderHistory || !Array.isArray(shop.orderHistory.orders)) {
-        console.log("Shop missing orderHistory or orders:", shop.shopName);
-        return [];
-      }
+    // Process data if request was successful
+    if (orderResponse.success) {
+      // Flatten orders from all shops
+      orders = orderResponse.data.shopData.flatMap((shop) => {
+        // Make sure shop has orderHistory and orders
+        if (!shop.orderHistory || !Array.isArray(shop.orderHistory.orders)) {
+          console.log("Shop missing orderHistory or orders:", shop.shopName);
+          return [];
+        }
 
-      return shop.orderHistory.orders.map((order) => ({
-        id: order.orderNumber || order.id,
-        date: order.createdAt,
-        storeName: shop.shopName,
-        amount: order.total,
-        items: order.orderItems?.length || 0,
-        status:
-          (order.status as
-            | "Completed"
-            | "Pending"
-            | "Processing"
-            | "Refunded"
-            | "Partially Refunded") || "Processing",
-      }));
-    });
+        return shop.orderHistory.orders.map((order) => ({
+          id: order.orderNumber || order.id,
+          date: order.createdAt,
+          storeName: shop.shopName,
+          amount: order.total,
+          items: order.orderItems?.length || 0,
+          status:
+            (order.status as
+              | "Completed"
+              | "Pending"
+              | "Processing"
+              | "Refunded"
+              | "Partially Refunded") || "Processing",
+        }));
+      });
 
-    console.log("Processed orders count:", orders.length);
+      console.log("Processed orders count:", orders.length);
+    }
   } else {
     // If API returns unexpected data, use an empty array
     console.error(
