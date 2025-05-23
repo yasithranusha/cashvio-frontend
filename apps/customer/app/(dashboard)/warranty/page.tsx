@@ -1,152 +1,112 @@
-import { DataTable } from "@workspace/ui/components/datatable/datatable";
-import { columns, Warranty } from "@/components/warrenty/warrenty-columns";
-import { Button } from "@workspace/ui/components/button";
-import { PlusCircle } from "lucide-react";
-import Link from "next/link";
+import { getSession } from "@/lib/session";
+import { getCustomerOrderHistoryWithWallet } from "@/actions/order";
+import WarrantyClient from "@/components/warrenty/warranty-client";
 import { addMonths } from "date-fns";
+import { Warranty } from "@/components/warrenty/warrenty-columns";
 
-// Helper function to create date that's a certain number of months from today
-const monthsFromNow = (months: number) => {
-  return addMonths(new Date(), months).toISOString();
+// Type for the shop data coming from the API
+type ShopData = {
+  shopId: string;
+  shopName: string;
+  shopLogo: string | null;
+  orderHistory: {
+    orders: any[];
+  };
 };
 
-// Generate dummy warranty data
-const warranties: Warranty[] = [
-  {
-    id: "WAR2025001",
-    productName: "Samsung 55\" OLED TV",
-    purchaseDate: "2025-01-15",
-    expiryDate: "2027-01-15", // 24 months warranty
-    storeName: "Electronics Hub",
-    warrantyPeriod: 24,
-    purchaseAmount: 45000,
-    status: "Active",
-    orderReference: "INV2025001",
-  },
-  {
-    id: "WAR2025002",
-    productName: "Apple MacBook Pro 14\"",
-    purchaseDate: "2024-11-20",
-    expiryDate: "2025-11-20", // 12 months warranty
-    storeName: "Tech Gadgets",
-    warrantyPeriod: 12,
-    purchaseAmount: 95000,
-    status: "Active",
-    orderReference: "INV2024015",
-  },
-  {
-    id: "WAR2025003",
-    productName: "Dyson V15 Vacuum",
-    purchaseDate: "2024-09-05",
-    expiryDate: monthsFromNow(-1), // Expired 1 month ago
-    storeName: "Home Essentials",
-    warrantyPeriod: 6,
-    purchaseAmount: 28000,
-    status: "Expired",
-    orderReference: "INV2024008",
-  },
-  {
-    id: "WAR2025004",
-    productName: "Sony WH-1000XM5 Headphones",
-    purchaseDate: "2025-03-10",
-    expiryDate: monthsFromNow(0.5), // Expiring in 2 weeks
-    storeName: "Electronics Hub",
-    warrantyPeriod: 6,
-    purchaseAmount: 12000,
-    status: "Active",
-    orderReference: "INV2025005",
-  },
-  {
-    id: "WAR2025005",
-    productName: "LG Refrigerator",
-    purchaseDate: "2024-12-05",
-    expiryDate: "2026-12-05", // 24 months warranty
-    storeName: "Home Essentials",
-    warrantyPeriod: 24,
-    purchaseAmount: 56000,
-    status: "Active",
-    orderReference: "INV2024020",
-  },
-  {
-    id: "WAR2025006",
-    productName: "Bose SoundBar 700",
-    purchaseDate: "2023-06-15",
-    expiryDate: "2024-06-15", // 12 months warranty
-    storeName: "Electronics Hub",
-    warrantyPeriod: 12,
-    purchaseAmount: 32000,
-    status: "Expired",
-    orderReference: "INV2023045",
-  },
-  {
-    id: "WAR2025007",
-    productName: "iPhone 17 Pro",
-    purchaseDate: "2025-02-25",
-    expiryDate: "2026-02-25", // 12 months warranty
-    storeName: "Tech Gadgets",
-    warrantyPeriod: 12,
-    purchaseAmount: 89000,
-    status: "Claimed",
-    orderReference: "INV2025003",
-  },
-];
+type WarrantyDataResponse = {
+  warranties: Warranty[];
+  error: string | null;
+};
 
-// Define the filters with string values
-const warrantyFilters = [
-  {
-    title: "Status",
-    filterKey: "status",
-    options: [
-      { label: "Active", value: "Active" },
-      { label: "Expired", value: "Expired" },
-      { label: "Claimed", value: "Claimed" },
-    ],
-  },
-  {
-    title: "Store",
-    filterKey: "storeName",
-    options: [
-      { label: "Electronics Hub", value: "Electronics Hub" },
-      { label: "Tech Gadgets", value: "Tech Gadgets" },
-      { label: "Home Essentials", value: "Home Essentials" },
-    ],
-  },
-  {
-    title: "Warranty Period",
-    filterKey: "warrantyPeriod",
-    options: [
-      // Convert number values to strings
-      { label: "6 Months", value: "6" },
-      { label: "12 Months", value: "12" },
-      { label: "24 Months", value: "24" },
-    ],
+export default async function WarrantyPage() {
+  // Get the customer ID from session
+  const session = await getSession();
+  const customerId = session?.user.id;
+
+  // Log session info for debugging
+  console.log("Warranty Session info:", {
+    hasSession: !!session,
+    customerId: customerId || "undefined",
+  });
+
+  // Fetch order history data - this contains products with warranty info
+  const response = await getCustomerOrderHistoryWithWallet(customerId);
+
+  // Log response for debugging
+  console.log("API Response Structure for Warranty:", {
+    success: response.success,
+    hasData: !!response.data,
+    hasError: !!response.error,
+    dataKeys: response.data ? Object.keys(response.data) : [],
+  });
+
+  // Initialize warranty data
+  const warrantyData: WarrantyDataResponse = {
+    warranties: [],
+    error: null,
+  };
+
+  if (!response.success) {
+    warrantyData.error = response.error || "Failed to fetch warranty data";
+  } else if (response.data && response.data.shopData) {
+    // Process order data from all shops to extract warranty information
+    const warranties: Warranty[] = [];
+
+    // Check if we have shop data
+    if (Array.isArray(response.data.shopData)) {
+      response.data.shopData.forEach((shop) => {
+        if (shop.orderHistory && Array.isArray(shop.orderHistory.orders)) {
+          // Process each order
+          shop.orderHistory.orders.forEach((order) => {
+            // Process each order item
+            if (order.orderItems && Array.isArray(order.orderItems)) {
+              order.orderItems.forEach((item) => {
+                // If there's warranty info on the product, create a warranty entry
+                if (item.product && item.product.warrantyMonths) {
+                  const purchaseDate = new Date(order.createdAt);
+                  const expiryDate = addMonths(
+                    purchaseDate,
+                    item.product.warrantyMonths
+                  );
+
+                  // Calculate warranty status
+                  const now = new Date();
+                  let status: "Active" | "Expired" | "Claimed" = "Active";
+                  if (now > expiryDate) {
+                    status = "Expired";
+                  }
+
+                  // Ensure numeric values for price
+                  const price =
+                    typeof item.sellingPrice === "string"
+                      ? parseFloat(item.sellingPrice)
+                      : item.sellingPrice || 0;
+
+                  warranties.push({
+                    id: `WAR-${item.id.substring(0, 8)}`,
+                    productName:
+                      item.product.name ||
+                      item.product.displayName ||
+                      "Product",
+                    purchaseDate: order.createdAt,
+                    expiryDate: expiryDate.toISOString(),
+                    storeName: shop.shopName,
+                    warrantyPeriod: item.product.warrantyMonths,
+                    purchaseAmount: price,
+                    status: status,
+                    orderReference: order.orderNumber || order.id,
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+
+      warrantyData.warranties = warranties;
+    }
   }
-];
 
-export default function WarrantyPage() {
-  // Count active warranties
-  const activeWarranties = warranties.filter(w => w.status === "Active").length;
-  
-  return (
-    <div className="flex flex-col gap-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold">Warranty Tracker</h1>
-          <p className="text-muted-foreground mt-1">
-            You have {activeWarranties} active {activeWarranties === 1 ? 'warranty' : 'warranties'}
-          </p>
-        </div>
-        
-      </div>
-      
-      <DataTable 
-        columns={columns}
-        data={warranties}
-        searchColumn={["productName", "storeName"]}
-        searchPlaceholder="Search by product or store"
-        seperateFilters
-        filters={warrantyFilters}
-      />
-    </div>
-  );
+  return <WarrantyClient warrantyData={warrantyData} />;
 }
