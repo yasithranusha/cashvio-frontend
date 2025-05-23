@@ -12,6 +12,17 @@ export const metadata: Metadata = {
   description: "View and manage all transactions processed through your shop",
 };
 
+// Define the actual API response structure
+interface OrdersApiResponse {
+  orders: TOrder[];
+  meta: {
+    page: number;
+    limit: number;
+    totalItems: number;
+    totalPages: number;
+  };
+}
+
 export default async function OrdersPage() {
   // Use the selected shop ID or fallback to the hardcoded one
   const selectedShopId =
@@ -19,6 +30,7 @@ export default async function OrdersPage() {
 
   // Fetch orders directly in the server component
   const result = await getOrders(selectedShopId);
+  console.log(result.data);
 
   // If shop ID is missing
   if (!selectedShopId) {
@@ -51,7 +63,9 @@ export default async function OrdersPage() {
     );
   }
 
-  const orders = result.data as TOrder[];
+  // Use proper type assertion for the API response
+  const apiResponse = result.data as unknown as OrdersApiResponse;
+  const orders = apiResponse.orders || [];
 
   return (
     <div className="container mx-auto py-6 max-w-7xl">
