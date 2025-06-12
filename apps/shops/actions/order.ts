@@ -1,7 +1,7 @@
 "use server";
 
 import { axiosClient } from "@/lib/customAxios";
-import { BACKEND_URL } from "@/lib/constants";
+import { AUTH_PATH, BACKEND_URL, ORDER_PATH, STOCK_PATH } from "@/lib/constants";
 import axios from "axios";
 import {
   TCustomerResponse,
@@ -15,7 +15,7 @@ import { OrderFormSchema } from "@/schemas/order";
 
 export async function getCustomers(shopId: string) {
   try {
-    const url = `${BACKEND_URL}/auth/shops/${shopId}/customers`;
+    const url = `${BACKEND_URL}${AUTH_PATH}/shops/${shopId}/customers`;
 
     const response = await axiosClient.get<TCustomerResponse>(url);
 
@@ -39,7 +39,7 @@ export async function getCustomers(shopId: string) {
 
 export async function getOrders(shopId: string) {
   try {
-    const url = `${BACKEND_URL}/order/orders?shopId=${shopId}`;
+    const url = `${BACKEND_URL}${ORDER_PATH}/orders?shopId=${shopId}`;
 
     const response = await axiosClient.get<TOrdersResponse>(url);
 
@@ -63,7 +63,7 @@ export async function getOrders(shopId: string) {
 
 export async function getProducts(shopId: string) {
   try {
-    const url = `${BACKEND_URL}/stock/products/with-items?shopId=${shopId}`;
+    const url = `${BACKEND_URL}${STOCK_PATH}/products/with-items?shopId=${shopId}`;
     const response = await axiosClient.get<TProductResponse>(url);
 
     return {
@@ -89,7 +89,7 @@ export async function getCustomerWalletBalance(
   customerId: string
 ) {
   try {
-    const url = `${BACKEND_URL}/order/customer-wallet/${shopId}/${customerId}`;
+    const url = `${BACKEND_URL}${ORDER_PATH}/customer-wallet/${shopId}/${customerId}`;
     const response = await axiosClient.get(url);
 
     return {
@@ -128,7 +128,7 @@ export async function createOrder(
     const orderData = validationResult.data;
 
     const response = await axiosClient.post(
-      `${BACKEND_URL}/order/orders`,
+      `${BACKEND_URL}${ORDER_PATH}/orders`,
       orderData
     );
 

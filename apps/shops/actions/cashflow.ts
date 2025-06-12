@@ -1,7 +1,7 @@
 "use server";
 
 import { axiosClient } from "@/lib/customAxios";
-import { BACKEND_URL } from "@/lib/constants";
+import { BACKEND_URL, ORDER_PATH } from "@/lib/constants";
 import axios from "axios";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -16,7 +16,7 @@ import {
 
 export async function getShopCashFlow(shopId?: string) {
   try {
-    const url = `${BACKEND_URL}/order/cash-flow/comprehensive/${shopId}`;
+    const url = `${BACKEND_URL}${ORDER_PATH}/cash-flow/comprehensive/${shopId}`;
 
     const response = await axiosClient.get<CashflowData>(url);
 
@@ -40,7 +40,7 @@ export async function getShopCashFlow(shopId?: string) {
 
 export async function getCustomerDues(shopId?: string) {
   try {
-    const url = `${BACKEND_URL}/order/cash-flow/customer-dues/${shopId}`;
+    const url = `${BACKEND_URL}${ORDER_PATH}/cash-flow/customer-dues/${shopId}`;
 
     const response = await axiosClient.get<CustomerDuesResponse>(url);
 
@@ -64,7 +64,7 @@ export async function getCustomerDues(shopId?: string) {
 
 export async function getUpcomingPayments(shopId?: string) {
   try {
-    const url = `${BACKEND_URL}/order/upcoming-payments?shopId=${shopId}`;
+    const url = `${BACKEND_URL}${ORDER_PATH}/upcoming-payments?shopId=${shopId}`;
 
     const response = await axiosClient.get<UpcomingPaymentsResponse>(url);
 
@@ -88,7 +88,7 @@ export async function getUpcomingPayments(shopId?: string) {
 
 export async function getUpcomingPaymentById(paymentid?: string) {
   try {
-    const url = `${BACKEND_URL}/order/upcoming-payments/${paymentid}`;
+    const url = `${BACKEND_URL}${ORDER_PATH}/upcoming-payments/${paymentid}`;
 
     const response = await axiosClient.get<UpcomingPayment>(url);
     return {
@@ -122,7 +122,7 @@ export async function createUpcomingPayment(
     }
 
     const response = await axiosClient.post(
-      `${BACKEND_URL}/order/upcoming-payments`,
+      `${BACKEND_URL}${ORDER_PATH}/upcoming-payments`,
       data
     );
 
@@ -159,7 +159,7 @@ export async function updateUpcomingPayment(
     }
 
     const response = await axiosClient.put(
-      `${BACKEND_URL}/order/upcoming-payments/${data.id}`,
+      `${BACKEND_URL}${ORDER_PATH}/upcoming-payments/${data.id}`,
       data
     );
 
@@ -188,7 +188,7 @@ export async function deleteUpcomingPayment(
 ): Promise<ActionResponse> {
   try {
     const response = await axiosClient.delete(
-      `${BACKEND_URL}/order/upcoming-payments/${paymentId}`
+      `${BACKEND_URL}${ORDER_PATH}/upcoming-payments/${paymentId}`
     );
 
     revalidatePath("/dashboard/cashflow");
@@ -214,7 +214,7 @@ export async function deleteUpcomingPayment(
 export async function getShopBaBalance(shopId: string) {
   try {
     const response = await axiosClient.get<ShopBalance>(
-      `${BACKEND_URL}/order/shop-balance/${shopId}`
+      `${BACKEND_URL}${ORDER_PATH}/shop-balance/${shopId}`
     );
 
     return {
@@ -239,7 +239,7 @@ export async function makePayment(paymentId: string): Promise<ActionResponse> {
   try {
     // Call the backend API to process the payment
     const response = await axiosClient.put(
-      `${BACKEND_URL}/order/upcoming-payments/${paymentId}/pay`
+      `${BACKEND_URL}${ORDER_PATH}/upcoming-payments/${paymentId}/pay`
     );
 
     // Revalidate the cashflow path to update the UI

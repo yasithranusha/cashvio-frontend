@@ -9,7 +9,7 @@ import { z } from "zod";
 import axios from "axios";
 import { createSession, deleteSession } from "@/lib/session";
 import { redirect } from "next/navigation";
-import { BACKEND_URL } from "@/lib/constants";
+import { BACKEND_URL, AUTH_PATH } from "@/lib/constants";
 import { revalidatePath } from "next/cache";
 import { axiosClient } from "@/lib/customAxios";
 
@@ -23,7 +23,7 @@ export async function login(values: z.infer<typeof LoginSchema>) {
   const { email, password } = validatedFields.data;
 
   try {
-    const response = await axios.post(`${BACKEND_URL}/auth/auth/login`, {
+    const response = await axios.post(`${BACKEND_URL}${AUTH_PATH}/auth/login`, {
       email,
       password,
     });
@@ -65,7 +65,7 @@ export async function reset(values: z.infer<typeof ResetSchema>) {
   const { email } = validatedFields.data;
 
   try {
-    await axios.post(`${BACKEND_URL}/auth/auth/forgot-password`, {
+    await axios.post(`${BACKEND_URL}${AUTH_PATH}/auth/forgot-password`, {
       email,
       useCase: "forgetPassword",
       role: "user",
@@ -80,7 +80,10 @@ export async function reset(values: z.infer<typeof ResetSchema>) {
 }
 
 export async function signout() {
-  const res = await axiosClient.post(`${BACKEND_URL}/auth/auth/logout`, {});
+  const res = await axiosClient.post(
+    `${BACKEND_URL}${AUTH_PATH}/auth/logout`,
+    {}
+  );
   if (res.status !== 201) {
     throw new Error("Failed to sign out");
   }
@@ -95,7 +98,7 @@ export async function signout() {
 export const refreshToken = async (oldToken: string) => {
   try {
     const response = await axios.post(
-      `${BACKEND_URL}/auth/auth/refresh`,
+      `${BACKEND_URL}${AUTH_PATH}/auth/refresh`,
       {},
       {
         headers: {
@@ -124,7 +127,7 @@ export const newPassword = async (
 
   try {
     const response = await axios.post(
-      `${BACKEND_URL}/auth/auth/reset-password`,
+      `${BACKEND_URL}${AUTH_PATH}/auth/reset-password`,
       {
         password,
         token,

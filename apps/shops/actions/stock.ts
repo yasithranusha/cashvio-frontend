@@ -1,7 +1,7 @@
 "use server";
 
 import { axiosClient } from "@/lib/customAxios";
-import { BACKEND_URL } from "@/lib/constants";
+import { BACKEND_URL, STOCK_PATH } from "@/lib/constants";
 import axios from "axios";
 import { TStockItemResponse } from "@workspace/ui/types/stock";
 import { revalidatePath } from "next/cache";
@@ -11,9 +11,9 @@ import { ActionResponse } from "@workspace/ui/types/common";
 
 export async function getStockItems(productId?: string) {
   try {
-    const url = productId 
-      ? `${BACKEND_URL}/stock/items?productId=${productId}`
-      : `${BACKEND_URL}/stock/items`;
+    const url = productId
+      ? `${BACKEND_URL}${STOCK_PATH}/items?productId=${productId}`
+      : `${BACKEND_URL}${STOCK_PATH}/items`;
       
     const response = await axiosClient.get<TStockItemResponse>(url);
     
@@ -47,7 +47,10 @@ export async function createStockItem(
       };
     }
 
-    const response = await axiosClient.post(`${BACKEND_URL}/stock/items`, data);
+    const response = await axiosClient.post(
+      `${BACKEND_URL}${STOCK_PATH}/items`,
+      data
+    );
 
     revalidatePath("/dashboard/inventory");
 
@@ -83,7 +86,10 @@ export async function updateStockItem(
       };
     }
 
-    const response = await axiosClient.put(`${BACKEND_URL}/stock/items/${itemId}`, data);
+    const response = await axiosClient.put(
+      `${BACKEND_URL}${STOCK_PATH}/items/${itemId}`,
+      data
+    );
 
     revalidatePath("/dashboard/inventory");
 
@@ -107,7 +113,7 @@ export async function updateStockItem(
 
 export async function deleteStockItem(itemId: string): Promise<ActionResponse> {
   try {
-    await axiosClient.delete(`${BACKEND_URL}/stock/items/${itemId}`);
+    await axiosClient.delete(`${BACKEND_URL}${STOCK_PATH}/items/${itemId}`);
     
     revalidatePath("/dashboard/inventory");
 

@@ -1,7 +1,7 @@
 "use server";
 
 import { axiosClient } from "@/lib/customAxios";
-import { BACKEND_URL } from "@/lib/constants";
+import { BACKEND_URL, MAILER_UPLOAD_PATH } from "@/lib/constants";
 import axios from "axios";
 import { ActionResponse } from "@workspace/ui/types/common";
 
@@ -27,7 +27,7 @@ export async function uploadFiles(
     }
 
     // Build URL with optional subfolder query param
-    let url = `${BACKEND_URL}mailer/upload`;
+    let url = `${BACKEND_URL}${MAILER_UPLOAD_PATH}/upload`;
     if (subFolder) {
       url += `?subFolder=${encodeURIComponent(subFolder)}`;
     }
@@ -67,10 +67,10 @@ export async function deleteFiles(
     // Format keys into an array for the request payload
     const keysArray = Array.isArray(keys) ? keys : [keys];
 
-    await axiosClient.delete(`${BACKEND_URL}mailer/upload`, {
+    await axiosClient.delete(`${BACKEND_URL}${MAILER_UPLOAD_PATH}/upload`, {
       data: {
-        key: keysArray
-      }
+        key: keysArray,
+      },
     });
 
     return {
