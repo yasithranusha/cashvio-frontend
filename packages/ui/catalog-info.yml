@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cashvio-ui-library
+  title: Cashvio UI Component Library
+  description: Shared UI components and design system for all Cashvio applications
+  annotations:
+    backstage.io/techdocs-ref: dir:./docs
+    github.com/project-slug: yasithranusha/cashvio-frontend
+  tags:
+    - ui-library
+    - components
+    - design-system
+    - shared
+    - react
+    - typescript
+  links:
+    - url: https://github.com/yasithranusha/cashvio-frontend/tree/main/packages/ui
+      title: Source Code
+      icon: github
+spec:
+  type: library
+  lifecycle: production
+  owner: frontend-team
+  system: cashvio-platform
+  partOf: cashvio-frontend-monorepo
+  providesApis: []
+  dependsOn: []

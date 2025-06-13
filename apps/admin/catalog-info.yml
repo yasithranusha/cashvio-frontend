@@ -1,0 +1,37 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cashvio-admin-app
+  title: Cashvio Admin Panel
+  description: Administrative interface for platform management and oversight
+  annotations:
+    backstage.io/techdocs-ref: dir:./docs
+    vercel.com/deployment-url: https://cashvio-admin.vercel.app/
+    github.com/project-slug: yasithranusha/cashvio-frontend
+  tags:
+    - frontend
+    - nextjs
+    - admin
+    - management
+    - platform
+  links:
+    - url: https://cashvio-admin.vercel.app/
+      title: Production App
+      icon: web
+    - url: https://github.com/yasithranusha/cashvio-frontend/tree/main/apps/admin
+      title: Source Code
+      icon: github
+spec:
+  type: website
+  lifecycle: production
+  owner: frontend-team
+  system: cashvio-platform
+  partOf: cashvio-frontend-monorepo
+  consumesApis:
+    - cashvio-auth-api
+    - cashvio-stock-api
+    - cashvio-order-api
+    - cashvio-mailer-api
+  dependsOn:
+    - component:cashvio-ui-library
+    - resource:vercel-deployment

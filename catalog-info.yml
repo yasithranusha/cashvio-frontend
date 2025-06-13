@@ -1,0 +1,350 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: cashvio-platform
+  title: Cashvio E-commerce Platform
+  description: Complete e-commerce platform with customer, shop, and admin interfaces
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: yasithranusha/cashvio-frontend
+  tags:
+    - e-commerce
+    - nextjs
+    - react
+    - turbo
+    - monorepo
+  links:
+    - url: https://cashvio-customer.vercel.app/
+      title: Customer App (Production)
+      icon: web
+    - url: https://cashvio-shop.vercel.app/
+      title: Shop Portal (Production)
+      icon: web
+    - url: https://cashvio-admin.vercel.app/
+      title: Admin Panel (Production)
+      icon: web
+spec:
+  owner: frontend-team
+  domain: e-commerce
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cashvio-frontend-monorepo
+  title: Cashvio Frontend Monorepo
+  description: Turbo monorepo containing all frontend applications and shared packages
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: yasithranusha/cashvio-frontend
+  tags:
+    - frontend
+    - monorepo
+    - turbo
+    - nextjs
+    - react19
+  links:
+    - url: https://github.com/yasithranusha/cashvio-frontend
+      title: Source Code
+      icon: github
+spec:
+  type: library
+  lifecycle: production
+  owner: frontend-team
+  system: cashvio-platform
+  dependsOn:
+    - resource:cashvio-auth-api
+    - resource:cashvio-stock-api
+    - resource:cashvio-order-api
+    - resource:cashvio-mailer-api
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cashvio-customer-app
+  title: Cashvio Customer Application
+  description: Customer-facing Next.js application for the Cashvio e-commerce platform
+  annotations:
+    backstage.io/techdocs-ref: dir:./apps/customer/docs
+    vercel.com/deployment-url: https://cashvio-customer.vercel.app/
+  tags:
+    - frontend
+    - nextjs
+    - customer
+    - e-commerce
+spec:
+  type: website
+  lifecycle: production
+  owner: frontend-team
+  system: cashvio-platform
+  partOf: cashvio-frontend-monorepo
+  consumesApis:
+    - cashvio-auth-api
+    - cashvio-order-api
+  dependsOn:
+    - component:cashvio-ui-library
+    - resource:vercel-deployment
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cashvio-shop-app
+  title: Cashvio Shop Portal
+  description: Shop owner interface for managing products, orders, and inventory
+  annotations:
+    backstage.io/techdocs-ref: dir:./apps/shops/docs
+    vercel.com/deployment-url: https://cashvio-shop.vercel.app/
+  tags:
+    - frontend
+    - nextjs
+    - shop
+    - inventory
+spec:
+  type: website
+  lifecycle: production
+  owner: frontend-team
+  system: cashvio-platform
+  partOf: cashvio-frontend-monorepo
+  consumesApis:
+    - cashvio-auth-api
+    - cashvio-stock-api
+    - cashvio-order-api
+  dependsOn:
+    - component:cashvio-ui-library
+    - resource:vercel-deployment
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cashvio-admin-app
+  title: Cashvio Admin Panel
+  description: Administrative interface for platform management and oversight
+  annotations:
+    backstage.io/techdocs-ref: dir:./apps/admin/docs
+    vercel.com/deployment-url: https://cashvio-admin.vercel.app/
+  tags:
+    - frontend
+    - nextjs
+    - admin
+    - management
+spec:
+  type: website
+  lifecycle: production
+  owner: frontend-team
+  system: cashvio-platform
+  partOf: cashvio-frontend-monorepo
+  consumesApis:
+    - cashvio-auth-api
+    - cashvio-stock-api
+    - cashvio-order-api
+    - cashvio-mailer-api
+  dependsOn:
+    - component:cashvio-ui-library
+    - resource:vercel-deployment
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cashvio-ui-library
+  title: Cashvio UI Component Library
+  description: Shared UI components and design system for all Cashvio applications
+  annotations:
+    backstage.io/techdocs-ref: dir:./packages/ui/docs
+  tags:
+    - ui-library
+    - components
+    - design-system
+    - shared
+spec:
+  type: library
+  lifecycle: production
+  owner: frontend-team
+  system: cashvio-platform
+  partOf: cashvio-frontend-monorepo
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: cashvio-auth-api
+  title: Cashvio Authentication API
+  description: Authentication and authorization service for the Cashvio platform
+  tags:
+    - auth
+    - backend
+    - api
+spec:
+  type: openapi
+  lifecycle: production
+  owner: backend-team
+  system: cashvio-platform
+  definition: |
+    openapi: 3.0.0
+    info:
+      title: Cashvio Auth API
+      version: 1.0.0
+    servers:
+      - url: http://ec2-51-21-155-1.eu-north-1.compute.amazonaws.com/auth
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: cashvio-stock-api
+  title: Cashvio Stock Management API
+  description: Product inventory and stock management service
+  tags:
+    - stock
+    - inventory
+    - backend
+    - api
+spec:
+  type: openapi
+  lifecycle: production
+  owner: backend-team
+  system: cashvio-platform
+  definition: |
+    openapi: 3.0.0
+    info:
+      title: Cashvio Stock API
+      version: 1.0.0
+    servers:
+      - url: http://ec2-51-21-155-1.eu-north-1.compute.amazonaws.com/stock
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: cashvio-order-api
+  title: Cashvio Order Management API
+  description: Order processing and management service
+  tags:
+    - orders
+    - backend
+    - api
+spec:
+  type: openapi
+  lifecycle: production
+  owner: backend-team
+  system: cashvio-platform
+  definition: |
+    openapi: 3.0.0
+    info:
+      title: Cashvio Order API
+      version: 1.0.0
+    servers:
+      - url: http://ec2-51-21-155-1.eu-north-1.compute.amazonaws.com/order
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: cashvio-mailer-api
+  title: Cashvio Mailer Service API
+  description: Email notification and communication service
+  tags:
+    - mailer
+    - notifications
+    - backend
+    - api
+spec:
+  type: openapi
+  lifecycle: production
+  owner: backend-team
+  system: cashvio-platform
+  definition: |
+    openapi: 3.0.0
+    info:
+      title: Cashvio Mailer API
+      version: 1.0.0
+    servers:
+      - url: http://ec2-51-21-155-1.eu-north-1.compute.amazonaws.com/mailer
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: vercel-deployment
+  title: Vercel Deployment Platform
+  description: Deployment platform for all frontend applications
+  tags:
+    - deployment
+    - hosting
+    - vercel
+spec:
+  type: deployment-platform
+  lifecycle: production
+  owner: infrastructure-team
+  system: cashvio-platform
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cashvio-auth-api
+  title: Cashvio Auth Service
+  description: Backend authentication service resource
+  tags:
+    - backend
+    - auth
+    - ec2
+spec:
+  type: api-service
+  lifecycle: production
+  owner: backend-team
+  system: cashvio-platform
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cashvio-stock-api
+  title: Cashvio Stock Service
+  description: Backend stock management service resource
+  tags:
+    - backend
+    - stock
+    - ec2
+spec:
+  type: api-service
+  lifecycle: production
+  owner: backend-team
+  system: cashvio-platform
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cashvio-order-api
+  title: Cashvio Order Service
+  description: Backend order management service resource
+  tags:
+    - backend
+    - orders
+    - ec2
+spec:
+  type: api-service
+  lifecycle: production
+  owner: backend-team
+  system: cashvio-platform
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: cashvio-mailer-api
+  title: Cashvio Mailer Service
+  description: Backend mailer service resource
+  tags:
+    - backend
+    - mailer
+    - ec2
+spec:
+  type: api-service
+  lifecycle: production
+  owner: backend-team
+  system: cashvio-platform
