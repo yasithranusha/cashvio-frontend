@@ -1,7 +1,7 @@
 "use server";
 
 import { axiosClient } from "@/lib/customAxios";
-import { BACKEND_URL } from "@/lib/constants";
+import { BACKEND_URL, STOCK_PATH } from "@/lib/constants";
 import axios from "axios";
 import { TProductResponse } from "@workspace/ui/types/product"
 import { revalidatePath } from "next/cache";
@@ -12,7 +12,7 @@ import { ActionResponse } from "@workspace/ui/types/common";
 export async function getProducts(shopId: string) {
   try {
     const response = await axiosClient.get<TProductResponse>(
-      `${BACKEND_URL}/stock/products?shopId=${shopId}`
+      `${BACKEND_URL}${STOCK_PATH}/products?shopId=${shopId}`
     );
     return {
       data: response.data,
@@ -35,7 +35,7 @@ export async function getProducts(shopId: string) {
 export async function getProductById(productId: string): Promise<ActionResponse> {
   try {
     const response = await axiosClient.get(
-      `${BACKEND_URL}/stock/products/${productId}`
+      `${BACKEND_URL}${STOCK_PATH}/products/${productId}`
     );
     
     return {
@@ -68,9 +68,12 @@ export async function createProduct(
       };
     }
 
-    const response = await axiosClient.post(`${BACKEND_URL}/stock/products`, {
-      ...data,
-    });
+    const response = await axiosClient.post(
+      `${BACKEND_URL}${STOCK_PATH}/products`,
+      {
+        ...data,
+      }
+    );
 
     revalidatePath("/dashboard/products");
 
@@ -111,7 +114,10 @@ export async function updateProduct(
       };
     }
 
-    const response = await axiosClient.put(`${BACKEND_URL}/stock/products/${id}`, updateData);
+    const response = await axiosClient.put(
+      `${BACKEND_URL}${STOCK_PATH}/products/${id}`,
+      updateData
+    );
 
     revalidatePath("/dashboard/products");
 
@@ -135,7 +141,7 @@ export async function updateProduct(
 
 export async function deleteProduct(id: string): Promise<ActionResponse> {
   try {
-    await axiosClient.delete(`${BACKEND_URL}/stock/products/${id}`);
+    await axiosClient.delete(`${BACKEND_URL}${STOCK_PATH}/products/${id}`);
     
     revalidatePath("/dashboard/products");
 

@@ -1,0 +1,34 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cashvio-customer-app
+  title: Cashvio Customer Application
+  description: Customer-facing Next.js application for the Cashvio e-commerce platform
+  annotations:
+    backstage.io/techdocs-ref: dir:./docs
+    vercel.com/deployment-url: https://cashvio-customer.vercel.app/
+    github.com/project-slug: yasithranusha/cashvio-frontend
+  tags:
+    - frontend
+    - nextjs
+    - customer
+    - e-commerce
+  links:
+    - url: https://cashvio-customer.vercel.app/
+      title: Production App
+      icon: web
+    - url: https://github.com/yasithranusha/cashvio-frontend/tree/main/apps/customer
+      title: Source Code
+      icon: github
+spec:
+  type: website
+  lifecycle: production
+  owner: frontend-team
+  system: cashvio-platform
+  partOf: cashvio-frontend-monorepo
+  consumesApis:
+    - cashvio-auth-api
+    - cashvio-order-api
+  dependsOn:
+    - component:cashvio-ui-library
+    - resource:vercel-deployment

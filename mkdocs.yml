@@ -1,0 +1,35 @@
+site_name: 'Cashvio Frontend Monorepo'
+site_description: 'Documentation for Cashvio Frontend Applications and Components'
+
+nav:
+  - Home: index.md
+  - Architecture:
+    - Overview: architecture/overview.md
+    - Monorepo Structure: architecture/monorepo.md
+    - API Integration: architecture/api-integration.md
+  - Applications:
+    - Customer App: apps/customer.md
+    - Shop Portal: apps/shops.md
+    - Admin Panel: apps/admin.md
+  - Packages:
+    - UI Library: packages/ui-library.md
+    - ESLint Config: packages/eslint-config.md
+    - TypeScript Config: packages/typescript-config.md
+  - Development:
+    - Getting Started: development/getting-started.md
+    - Contributing: development/contributing.md
+    - Deployment: development/deployment.md
+  - API Reference:
+    - Authentication: api/auth.md
+    - Stock Management: api/stock.md
+    - Order Processing: api/orders.md
+    - Email Service: api/mailer.md
+
+plugins:
+  - techdocs-core
+
+theme:
+  name: material
+  palette:
+    primary: blue
+    accent: blue

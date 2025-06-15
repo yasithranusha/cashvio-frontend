@@ -1,7 +1,7 @@
 "use server";
 
 import { axiosClient } from "@/lib/customAxios";
-import { BACKEND_URL } from "@/lib/constants";
+import { BACKEND_URL, STOCK_PATH } from "@/lib/constants";
 import axios from "axios";
 import { TSupplierResponse } from "@/types/supplier";
 import { revalidatePath } from "next/cache";
@@ -12,7 +12,7 @@ import { ActionResponse } from "@workspace/ui/types/common";
 export async function getSuppliers(storeId: string) {
   try {
     const response = await axiosClient.get<TSupplierResponse>(
-      `${BACKEND_URL}/stock/suppliers?shopId=${storeId}`
+      `${BACKEND_URL}${STOCK_PATH}/suppliers?shopId=${storeId}`
     );
     return {
       data: response.data,
@@ -44,9 +44,12 @@ export async function createSupplier(
       };
     }
 
-    const response = await axiosClient.post(`${BACKEND_URL}/stock/suppliers`, {
-      ...data,
-    });
+    const response = await axiosClient.post(
+      `${BACKEND_URL}${STOCK_PATH}/suppliers`,
+      {
+        ...data,
+      }
+    );
 
     revalidatePath("/dashboard/suppliers");
 
@@ -87,7 +90,10 @@ export async function updateSupplier(
       };
     }
 
-    const response = await axiosClient.put(`${BACKEND_URL}/stock/suppliers/${id}`, updateData);
+    const response = await axiosClient.put(
+      `${BACKEND_URL}${STOCK_PATH}/suppliers/${id}`,
+      updateData
+    );
 
     revalidatePath("/dashboard/suppliers");
 
@@ -111,7 +117,7 @@ export async function updateSupplier(
 
 export async function deleteSupplier(id: string): Promise<ActionResponse> {
   try {
-    await axiosClient.delete(`${BACKEND_URL}/stock/suppliers/${id}`);
+    await axiosClient.delete(`${BACKEND_URL}${STOCK_PATH}/suppliers/${id}`);
     
     revalidatePath("/dashboard/suppliers");
 

@@ -1,7 +1,7 @@
 "use server";
 
 import { axiosClient } from "@/lib/customAxios";
-import { BACKEND_URL } from "@/lib/constants";
+import { BACKEND_URL, STOCK_PATH } from "@/lib/constants";
 import axios from "axios";
 import {
   TCategoryResponse,
@@ -25,12 +25,12 @@ export type CategoryType = "main" | "sub" | "subsub";
 function getCategoryEndpoint(type: CategoryType = "main") {
   switch (type) {
     case "sub":
-      return `${BACKEND_URL}stock/categories/subcategories`;
+      return `${BACKEND_URL}${STOCK_PATH}/categories/subcategories`;
     case "subsub":
-      return `${BACKEND_URL}stock/categories/subsubcategories`;
+      return `${BACKEND_URL}${STOCK_PATH}/categories/subsubcategories`;
     case "main":
     default:
-      return `${BACKEND_URL}stock/categories`;
+      return `${BACKEND_URL}${STOCK_PATH}/categories`;
   }
 }
 
@@ -177,7 +177,7 @@ export async function updateCategory(
 
     let endpoint = getCategoryEndpoint(type);
     if (type === "subsub") {
-      endpoint = `${BACKEND_URL}stock/categories/subsubcategories/${id}`;
+      endpoint = `${BACKEND_URL}${STOCK_PATH}/categories/subsubcategories/${id}`;
     } else {
       endpoint = `${endpoint}/${id}`;
     }
@@ -212,7 +212,7 @@ export async function deleteCategory(
   try {
     let endpoint = getCategoryEndpoint(type);
     if (type === "subsub") {
-      endpoint = `${BACKEND_URL}stock/categories/subsubcategories/${id}`;
+      endpoint = `${BACKEND_URL}${STOCK_PATH}/categories/subsubcategories/${id}`;
     } else {
       endpoint = `${endpoint}/${id}`;
     }

@@ -1,0 +1,36 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: cashvio-shop-app
+  title: Cashvio Shop Portal
+  description: Shop owner interface for managing products, orders, and inventory
+  annotations:
+    backstage.io/techdocs-ref: dir:./docs
+    vercel.com/deployment-url: https://cashvio-shop.vercel.app/
+    github.com/project-slug: yasithranusha/cashvio-frontend
+  tags:
+    - frontend
+    - nextjs
+    - shop
+    - inventory
+    - management
+  links:
+    - url: https://cashvio-shop.vercel.app/
+      title: Production App
+      icon: web
+    - url: https://github.com/yasithranusha/cashvio-frontend/tree/main/apps/shops
+      title: Source Code
+      icon: github
+spec:
+  type: website
+  lifecycle: production
+  owner: frontend-team
+  system: cashvio-platform
+  partOf: cashvio-frontend-monorepo
+  consumesApis:
+    - cashvio-auth-api
+    - cashvio-stock-api
+    - cashvio-order-api
+  dependsOn:
+    - component:cashvio-ui-library
+    - resource:vercel-deployment
