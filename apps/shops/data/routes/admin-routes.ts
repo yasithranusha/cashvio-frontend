@@ -12,6 +12,7 @@ import {
   Package,
   Package2,
   LifeBuoy,
+  UserCog,
 } from "lucide-react";
 
 export interface IBaseMenuItem {
@@ -94,6 +95,12 @@ const navMain: IMenueItem[] = [
     title: "Suppliers",
     url: "/dashboard/suppliers",
     icon: BookUser,
+  },
+  {
+    title: "Employees",
+    url: "/dashboard/employees",
+    icon: UserCog,
+    onlyForRoles: [Role.SHOP_OWNER],
   },
   {
     title: "Cash Flow",
