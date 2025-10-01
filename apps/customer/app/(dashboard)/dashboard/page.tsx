@@ -25,21 +25,21 @@ const recentPurchases = [
     id: "INV2025001",
     date: "2025-05-01",
     storeName: "Electronics Hub",
-    amount: 4800,
+    amount: 200000,
     status: "Picked",
   },
   {
     id: "INV2025002",
     date: "2025-04-23",
     storeName: "Fashion Store",
-    amount: 2100,
+    amount: 140000,
     status: "Delivered",
   },
   {
     id: "INV2025003",
     date: "2025-04-15",
     storeName: "Home Essentials",
-    amount: 3450,
+    amount: 100000,
     status: "In Transit",
   },
 ];
@@ -50,13 +50,13 @@ async function getWarrantyItemsCount() {
 }
 
 async function getSupportRequestsCount() {
-  return 12;
+  return 2;
 }
 
 // Add a function to get unread support requests
 async function getUnreadSupportRequestsCount() {
   // Replace with actual API call in production
-  return 5;
+  return 1;
 }
 
 export default async function Dashboard() {

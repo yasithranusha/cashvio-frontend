@@ -10,7 +10,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
-import { MoreHorizontal, Receipt, FileText, Download, ExternalLink } from "lucide-react";
+import {
+  MoreHorizontal,
+  Receipt,
+  FileText,
+  Download,
+  ExternalLink,
+} from "lucide-react";
 import Link from "next/link";
 
 // Use the Order type defined in order-column.tsx
@@ -19,7 +25,12 @@ type Order = {
   date: string;
   storeName: string;
   amount: number;
-  status: "Completed" | "Pending" | "Processing" | "Refunded" | "Partially Refunded";
+  status:
+    | "Completed"
+    | "Pending"
+    | "Processing"
+    | "Refunded"
+    | "Partially Refunded";
   items?: number;
 };
 
@@ -36,37 +47,29 @@ export default function OrderActions({ order }: { order: Order }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Order Actions</DropdownMenuLabel>
-        
+
         <DropdownMenuItem
           onClick={() => navigator.clipboard.writeText(order.id)}
         >
           Copy order ID
         </DropdownMenuItem>
-        
+
         <DropdownMenuSeparator />
-        
+
         <DropdownMenuItem asChild>
           <Link href={`/orders/${order.id}`}>
             <FileText className="h-4 w-4 mr-2" />
             View order details
           </Link>
         </DropdownMenuItem>
-        
-        <DropdownMenuItem onClick={() => console.log("Download receipt", order.id)}>
+
+        <DropdownMenuItem
+          onClick={() => console.log("Download receipt", order.id)}
+        >
           <Download className="h-4 w-4 mr-2" />
           Download receipt
         </DropdownMenuItem>
-        
-        {order.status !== "Completed" && order.status !== "Refunded" && (
-          <DropdownMenuItem 
-            onClick={() => console.log("Track order", order.id)}
-            className="text-blue-600 hover:text-blue-800"
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            Track order status
-          </DropdownMenuItem>
-        )}
-        
+
         {order.status === "Completed" && (
           <>
             <DropdownMenuSeparator />
