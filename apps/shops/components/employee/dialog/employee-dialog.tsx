@@ -89,9 +89,7 @@ export function EmployeeDialog({
             <div className="flex items-center justify-between">
               <div>
                 <DialogTitle className="text-xl font-semibold">
-                  {employee
-                    ? `Edit Employee`
-                    : "Add New Employee"}
+                  {employee ? `Edit Employee` : "Add New Employee"}
                 </DialogTitle>
                 <DialogDescription className="mt-1">
                   {employee
@@ -160,15 +158,18 @@ export function EmployeeDialog({
               Unsaved Changes
             </AlertDialogTitle>
             <AlertDialogDescription>
-              You have unsaved changes that will be lost if you close this dialog.
-              Are you sure you want to continue?
+              You have unsaved changes that will be lost if you close this
+              dialog. Are you sure you want to continue?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setShowConfirmClose(false)}>
               Keep Editing
             </AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmClose} className="bg-destructive hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={handleConfirmClose}
+              className="bg-destructive hover:bg-destructive/90"
+            >
               Discard Changes
             </AlertDialogAction>
           </AlertDialogFooter>

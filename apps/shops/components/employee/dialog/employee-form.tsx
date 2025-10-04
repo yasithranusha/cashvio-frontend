@@ -53,7 +53,7 @@ import {
   AlertTriangle,
   ChevronDown,
   ChevronRight,
-  Loader2
+  Loader2,
 } from "lucide-react";
 
 interface EmployeeFormProps {
@@ -96,9 +96,13 @@ export default function EmployeeForm({
 
   const watchedFields = form.watch();
   const isFormValid = form.formState.isValid;
-  const hasRequiredFields = watchedFields.firstName && watchedFields.lastName &&
-                           watchedFields.email && watchedFields.contactNumber &&
-                           watchedFields.role && watchedFields.dateOfJoining;
+  const hasRequiredFields =
+    watchedFields.firstName &&
+    watchedFields.lastName &&
+    watchedFields.email &&
+    watchedFields.contactNumber &&
+    watchedFields.role &&
+    watchedFields.dateOfJoining;
 
   function onSubmit(values: z.infer<typeof EmployeeSchema>) {
     startTransition(async () => {
@@ -157,7 +161,11 @@ export default function EmployeeForm({
                       <Input
                         placeholder="John"
                         {...field}
-                        className={form.formState.errors.firstName ? "border-destructive" : ""}
+                        className={
+                          form.formState.errors.firstName
+                            ? "border-destructive"
+                            : ""
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -178,7 +186,11 @@ export default function EmployeeForm({
                       <Input
                         placeholder="Doe"
                         {...field}
-                        className={form.formState.errors.lastName ? "border-destructive" : ""}
+                        className={
+                          form.formState.errors.lastName
+                            ? "border-destructive"
+                            : ""
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -202,7 +214,9 @@ export default function EmployeeForm({
                       placeholder="john.doe@example.com"
                       type="email"
                       {...field}
-                      className={form.formState.errors.email ? "border-destructive" : ""}
+                      className={
+                        form.formState.errors.email ? "border-destructive" : ""
+                      }
                     />
                   </FormControl>
                   <FormDescription>
@@ -228,7 +242,11 @@ export default function EmployeeForm({
                       defaultCountry="LK"
                       placeholder="Enter phone number"
                       {...field}
-                      className={form.formState.errors.contactNumber ? "border-destructive" : ""}
+                      className={
+                        form.formState.errors.contactNumber
+                          ? "border-destructive"
+                          : ""
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -266,7 +284,13 @@ export default function EmployeeForm({
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className={form.formState.errors.role ? "border-destructive" : ""}>
+                        <SelectTrigger
+                          className={
+                            form.formState.errors.role
+                              ? "border-destructive"
+                              : ""
+                          }
+                        >
                           <SelectValue placeholder="Select a role" />
                         </SelectTrigger>
                       </FormControl>
@@ -337,7 +361,11 @@ export default function EmployeeForm({
                     <Input
                       type="date"
                       {...field}
-                      className={form.formState.errors.dateOfJoining ? "border-destructive" : ""}
+                      className={
+                        form.formState.errors.dateOfJoining
+                          ? "border-destructive"
+                          : ""
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -355,7 +383,8 @@ export default function EmployeeForm({
                       Active Employee Status
                     </FormLabel>
                     <FormDescription>
-                      When enabled, employee can access the system and perform their duties
+                      When enabled, employee can access the system and perform
+                      their duties
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -372,7 +401,10 @@ export default function EmployeeForm({
 
         {/* Optional Information Section */}
         <Card>
-          <Collapsible open={showOptionalFields} onOpenChange={setShowOptionalFields}>
+          <Collapsible
+            open={showOptionalFields}
+            onOpenChange={setShowOptionalFields}
+          >
             <CollapsibleTrigger asChild>
               <CardHeader className="pb-4 cursor-pointer hover:bg-muted/50 transition-colors">
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -382,7 +414,9 @@ export default function EmployeeForm({
                     <ChevronRight className="h-5 w-5" />
                   )}
                   Additional Information
-                  <span className="text-sm font-normal text-muted-foreground">(Optional)</span>
+                  <span className="text-sm font-normal text-muted-foreground">
+                    (Optional)
+                  </span>
                 </CardTitle>
                 <CardDescription>
                   Address and emergency contact details
@@ -459,9 +493,7 @@ export default function EmployeeForm({
                 {initialData ? "Updating..." : "Creating..."}
               </>
             ) : (
-              <>
-                {initialData ? "Update Employee" : "Add Employee"}
-              </>
+              <>{initialData ? "Update Employee" : "Add Employee"}</>
             )}
           </Button>
 

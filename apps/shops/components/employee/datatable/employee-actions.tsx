@@ -41,7 +41,9 @@ export default function EmployeeActions({ employee }: { employee: TEmployee }) {
         !employee.isActive
       );
       if (result.success) {
-        toast.success(`Employee ${employee.isActive ? "deactivated" : "activated"} successfully`);
+        toast.success(
+          `Employee ${employee.isActive ? "deactivated" : "activated"} successfully`
+        );
         router.refresh();
       } else {
         toast.error(result.error || "Failed to update employee status");

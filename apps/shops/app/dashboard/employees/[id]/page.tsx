@@ -16,13 +16,13 @@ import { Role } from "@workspace/ui/enum/user.enum";
 const formatPhoneNumber = (phone: string) => {
   if (!phone) return phone;
   // Remove all non-digit characters
-  const cleaned = phone.replace(/\D/g, '');
+  const cleaned = phone.replace(/\D/g, "");
   // Format as (XXX) XXX-XXXX for US numbers
   if (cleaned.length === 10) {
     return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
   }
   // For international numbers, just return as-is with spaces
-  return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+  return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
 };
 import Link from "next/link";
 import {
@@ -78,9 +78,7 @@ export default async function EmployeeDetailPage({
         <AlertCircle className="h-12 w-12 text-destructive" />
         <div className="text-center space-y-2">
           <h3 className="text-lg font-semibold">Employee Not Found</h3>
-          <p className="text-muted-foreground max-w-md">
-            {employeeData.error}
-          </p>
+          <p className="text-muted-foreground max-w-md">{employeeData.error}</p>
           <Button variant="outline" size="sm" asChild>
             <Link href="/dashboard/employees">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -113,16 +111,21 @@ export default async function EmployeeDetailPage({
   }
 
   const employee = employeeData.data;
-  const roleLabel = employee.role === Role.SHOP_OWNER ? "Shop Owner" : "Shop Staff";
-  const roleVariant = employee.role === Role.SHOP_OWNER ? "default" : "secondary";
+  const roleLabel =
+    employee.role === Role.SHOP_OWNER ? "Shop Owner" : "Shop Staff";
+  const roleVariant =
+    employee.role === Role.SHOP_OWNER ? "default" : "secondary";
 
   // Calculate employment duration
   const joinDate = new Date(employee.dateOfJoining);
   const now = new Date();
-  const employmentDuration = Math.floor((now.getTime() - joinDate.getTime()) / (1000 * 60 * 60 * 24 * 30)); // months
+  const employmentDuration = Math.floor(
+    (now.getTime() - joinDate.getTime()) / (1000 * 60 * 60 * 24 * 30)
+  ); // months
 
   // Get initials for avatar
-  const initials = `${employee.firstName.charAt(0)}${employee.lastName.charAt(0)}`.toUpperCase();
+  const initials =
+    `${employee.firstName.charAt(0)}${employee.lastName.charAt(0)}`.toUpperCase();
 
   return (
     <div className="container mx-auto py-6 space-y-6">
@@ -138,7 +141,9 @@ export default async function EmployeeDetailPage({
 
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16">
-              <AvatarFallback className={`text-2xl font-bold ${employee.isActive ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}>
+              <AvatarFallback
+                className={`text-2xl font-bold ${employee.isActive ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}
+              >
                 {initials}
               </AvatarFallback>
             </Avatar>
@@ -150,7 +155,10 @@ export default async function EmployeeDetailPage({
                 </h1>
                 <div className="flex items-center gap-2">
                   {employee.isActive ? (
-                    <Badge variant="default" className="bg-green-100 text-green-800 hover:bg-green-100">
+                    <Badge
+                      variant="default"
+                      className="bg-green-100 text-green-800 hover:bg-green-100"
+                    >
                       <CheckCircle className="h-3 w-3 mr-1" />
                       Active
                     </Badge>
@@ -215,7 +223,9 @@ export default async function EmployeeDetailPage({
               <div>
                 <p className="text-sm text-muted-foreground">Tenure</p>
                 <p className="font-semibold">
-                  {employmentDuration < 1 ? "< 1 month" : `${employmentDuration} months`}
+                  {employmentDuration < 1
+                    ? "< 1 month"
+                    : `${employmentDuration} months`}
                 </p>
               </div>
             </div>
@@ -268,11 +278,15 @@ export default async function EmployeeDetailPage({
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-muted-foreground">First Name</label>
+                <label className="text-sm font-medium text-muted-foreground">
+                  First Name
+                </label>
                 <p className="text-lg font-medium">{employee.firstName}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Last Name</label>
+                <label className="text-sm font-medium text-muted-foreground">
+                  Last Name
+                </label>
                 <p className="text-lg font-medium">{employee.lastName}</p>
               </div>
             </div>
@@ -280,7 +294,9 @@ export default async function EmployeeDetailPage({
             <Separator />
 
             <div>
-              <label className="text-sm font-medium text-muted-foreground mb-2 block">Contact Details</label>
+              <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                Contact Details
+              </label>
               <div className="space-y-3">
                 <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                   <Mail className="h-4 w-4 text-muted-foreground" />
@@ -329,10 +345,14 @@ export default async function EmployeeDetailPage({
               <>
                 <Separator />
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground mb-2 block">Address</label>
+                  <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                    Address
+                  </label>
                   <div className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
                     <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
-                    <p className="text-sm leading-relaxed">{employee.address}</p>
+                    <p className="text-sm leading-relaxed">
+                      {employee.address}
+                    </p>
                   </div>
                 </div>
               </>
@@ -351,17 +371,26 @@ export default async function EmployeeDetailPage({
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Role</label>
+                <label className="text-sm font-medium text-muted-foreground">
+                  Role
+                </label>
                 <div className="mt-1">
-                  <Badge variant={roleVariant as "default" | "secondary"} className="text-sm">
+                  <Badge
+                    variant={roleVariant as "default" | "secondary"}
+                    className="text-sm"
+                  >
                     {roleLabel}
                   </Badge>
                 </div>
               </div>
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Status</label>
+                <label className="text-sm font-medium text-muted-foreground">
+                  Status
+                </label>
                 <div className="mt-1">
-                  <Badge variant={employee.isActive ? "default" : "destructive"}>
+                  <Badge
+                    variant={employee.isActive ? "default" : "destructive"}
+                  >
                     {employee.isActive ? "Active" : "Inactive"}
                   </Badge>
                 </div>
@@ -375,8 +404,12 @@ export default async function EmployeeDetailPage({
                 <div className="flex items-center gap-3">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Date of Joining</p>
-                    <p className="font-medium">{joinDate.toLocaleDateString()}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Date of Joining
+                    </p>
+                    <p className="font-medium">
+                      {joinDate.toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -386,8 +419,12 @@ export default async function EmployeeDetailPage({
                   <div className="flex items-center gap-3">
                     <DollarSign className="h-4 w-4 text-muted-foreground" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Monthly Salary</p>
-                      <p className="font-medium font-mono">${employee.salary.toLocaleString()}</p>
+                      <p className="text-sm text-muted-foreground">
+                        Monthly Salary
+                      </p>
+                      <p className="font-medium font-mono">
+                        ${employee.salary.toLocaleString()}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -397,8 +434,12 @@ export default async function EmployeeDetailPage({
                 <div className="flex items-center gap-3">
                   <Clock className="h-4 w-4 text-muted-foreground" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Last Updated</p>
-                    <p className="font-medium">{new Date(employee.updatedAt).toLocaleDateString()}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Last Updated
+                    </p>
+                    <p className="font-medium">
+                      {new Date(employee.updatedAt).toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -407,7 +448,9 @@ export default async function EmployeeDetailPage({
             <Separator />
 
             <div className="text-xs text-muted-foreground">
-              <p>Employee ID: <span className="font-mono">{employee.id}</span></p>
+              <p>
+                Employee ID: <span className="font-mono">{employee.id}</span>
+              </p>
               <p>Created: {new Date(employee.createdAt).toLocaleString()}</p>
             </div>
           </CardContent>
@@ -431,7 +474,9 @@ export default async function EmployeeDetailPage({
               </Link>
             </Button>
             <Button variant="outline" size="sm" asChild>
-              <Link href={`https://wa.me/${employee.contactNumber.replace(/\D/g, '')}`}>
+              <Link
+                href={`https://wa.me/${employee.contactNumber.replace(/\D/g, "")}`}
+              >
                 <MessageSquare className="h-4 w-4 mr-2" />
                 WhatsApp
               </Link>

@@ -16,13 +16,13 @@ import { Eye, Mail, Phone } from "lucide-react";
 const formatPhoneNumber = (phone: string) => {
   if (!phone) return phone;
   // Remove all non-digit characters
-  const cleaned = phone.replace(/\D/g, '');
+  const cleaned = phone.replace(/\D/g, "");
   // Format as (XXX) XXX-XXXX for US numbers
   if (cleaned.length === 10) {
     return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
   }
   // For international numbers, just return as-is with spaces
-  return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+  return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
 };
 
 export const columns: ColumnDef<TEmployee>[] = [
@@ -39,18 +39,27 @@ export const columns: ColumnDef<TEmployee>[] = [
       const isActive = row.original.isActive;
 
       // Get initials for avatar
-      const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+      const initials =
+        `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
 
       return (
         <div className="flex items-center gap-3 min-w-0">
           <Avatar className="h-8 w-8 flex-shrink-0">
-            <AvatarFallback className={isActive ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}>
+            <AvatarFallback
+              className={
+                isActive
+                  ? "bg-primary/10 text-primary"
+                  : "bg-muted text-muted-foreground"
+              }
+            >
               {initials}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <span className={`font-medium truncate ${isActive ? "text-foreground" : "text-muted-foreground line-through"}`}>
+              <span
+                className={`font-medium truncate ${isActive ? "text-foreground" : "text-muted-foreground line-through"}`}
+              >
                 {fullName}
               </span>
               {!isActive && (
@@ -77,12 +86,7 @@ export const columns: ColumnDef<TEmployee>[] = [
       const contact = row.getValue("contactNumber") as string;
       return (
         <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-6 w-6 p-0"
-            asChild
-          >
+          <Button variant="ghost" size="sm" className="h-6 w-6 p-0" asChild>
             <Link href={`tel:${contact}`}>
               <Phone className="h-3 w-3" />
             </Link>
@@ -158,11 +162,7 @@ export const columns: ColumnDef<TEmployee>[] = [
         textColor = "text-blue-600";
       }
 
-      return (
-        <div className={`text-sm ${textColor}`}>
-          {displayText}
-        </div>
-      );
+      return <div className={`text-sm ${textColor}`}>{displayText}</div>;
     },
     size: 100,
   },
@@ -191,12 +191,7 @@ export const columns: ColumnDef<TEmployee>[] = [
       const employee = row.original;
       return (
         <div className="flex items-center justify-center gap-1">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0"
-            asChild
-          >
+          <Button variant="ghost" size="sm" className="h-8 w-8 p-0" asChild>
             <Link href={`/dashboard/employees/${employee.id}`}>
               <Eye className="h-4 w-4" />
             </Link>

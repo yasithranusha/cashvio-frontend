@@ -9,13 +9,13 @@ import { TSupplier } from "@/types/supplier";
 const formatPhoneNumber = (phone: string) => {
   if (!phone) return phone;
   // Remove all non-digit characters
-  const cleaned = phone.replace(/\D/g, '');
+  const cleaned = phone.replace(/\D/g, "");
   // Format as (XXX) XXX-XXXX for US numbers
   if (cleaned.length === 10) {
     return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
   }
   // For international numbers, just return as-is with spaces
-  return phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+  return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
 };
 import Link from "next/link";
 

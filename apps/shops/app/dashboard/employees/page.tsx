@@ -3,7 +3,12 @@ import { columns } from "@/components/employee/datatable/employee-columns";
 import { DataTable } from "@workspace/ui/components/datatable/datatable";
 import { getSelectedShopId } from "@/lib/shop";
 import { EmployeeDialog } from "@/components/employee/dialog/employee-dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/components/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@workspace/ui/components/card";
 import { Button } from "@workspace/ui/components/button";
 import { Badge } from "@workspace/ui/components/badge";
 import {
@@ -12,7 +17,7 @@ import {
   AlertCircle,
   RefreshCw,
   TrendingUp,
-  Activity
+  Activity,
 } from "lucide-react";
 import { Role } from "@workspace/ui/enum/user.enum";
 
@@ -62,10 +67,14 @@ export default async function EmployeePage() {
 
   const employees = employeesData?.data?.data || [];
   const totalEmployees = employees.length;
-  const activeEmployees = employees.filter(emp => emp.isActive).length;
+  const activeEmployees = employees.filter((emp) => emp.isActive).length;
   const inactiveEmployees = totalEmployees - activeEmployees;
-  const shopOwners = employees.filter(emp => emp.role === Role.SHOP_OWNER).length;
-  const staffMembers = employees.filter(emp => emp.role === Role.SHOP_STAFF).length;
+  const shopOwners = employees.filter(
+    (emp) => emp.role === Role.SHOP_OWNER
+  ).length;
+  const staffMembers = employees.filter(
+    (emp) => emp.role === Role.SHOP_STAFF
+  ).length;
 
   return (
     <div className="container mx-auto py-6 space-y-6">
@@ -85,7 +94,9 @@ export default async function EmployeePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Employees</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Employees
+              </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -98,14 +109,16 @@ export default async function EmployeePage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Staff</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Active Staff
+              </CardTitle>
               <Activity className="h-4 w-4 text-green-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{activeEmployees}</div>
-              <p className="text-xs text-muted-foreground">
-                Currently working
-              </p>
+              <div className="text-2xl font-bold text-green-600">
+                {activeEmployees}
+              </div>
+              <p className="text-xs text-muted-foreground">Currently working</p>
             </CardContent>
           </Card>
 
@@ -115,7 +128,9 @@ export default async function EmployeePage() {
               <TrendingUp className="h-4 w-4 text-blue-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{shopOwners}</div>
+              <div className="text-2xl font-bold text-blue-600">
+                {shopOwners}
+              </div>
               <p className="text-xs text-muted-foreground">
                 Administrative access
               </p>
@@ -124,14 +139,16 @@ export default async function EmployeePage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Staff Members</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Staff Members
+              </CardTitle>
               <UserPlus className="h-4 w-4 text-purple-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-purple-600">{staffMembers}</div>
-              <p className="text-xs text-muted-foreground">
-                Regular employees
-              </p>
+              <div className="text-2xl font-bold text-purple-600">
+                {staffMembers}
+              </div>
+              <p className="text-xs text-muted-foreground">Regular employees</p>
             </CardContent>
           </Card>
         </div>
@@ -146,8 +163,8 @@ export default async function EmployeePage() {
             </div>
             <h3 className="text-xl font-semibold mb-2">No Employees Yet</h3>
             <p className="text-muted-foreground text-center mb-6 max-w-md">
-              Get started by adding your first employee. You can manage their roles,
-              contact information, and access permissions.
+              Get started by adding your first employee. You can manage their
+              roles, contact information, and access permissions.
             </p>
             <EmployeeDialog shopId={selectedShopId} />
           </CardContent>
