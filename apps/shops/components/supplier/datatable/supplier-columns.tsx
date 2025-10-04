@@ -4,7 +4,19 @@ import { ColumnDef } from "@tanstack/react-table";
 import SupplierActions from "./supplier-actions";
 import { DataTableColumnHeader } from "@workspace/ui/components/datatable/datatable-header";
 import { TSupplier } from "@/types/supplier";
-import { formatPhoneNumber } from "react-phone-number-input";
+
+// Simple phone number formatting function
+const formatPhoneNumber = (phone: string) => {
+  if (!phone) return phone;
+  // Remove all non-digit characters
+  const cleaned = phone.replace(/\D/g, "");
+  // Format as (XXX) XXX-XXXX for US numbers
+  if (cleaned.length === 10) {
+    return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+  }
+  // For international numbers, just return as-is with spaces
+  return phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+};
 import Link from "next/link";
 
 export const columns: ColumnDef<TSupplier>[] = [

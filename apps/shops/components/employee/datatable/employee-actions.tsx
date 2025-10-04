@@ -24,7 +24,7 @@ import EmployeeDeleteDialog from "@/components/employee/dialog/employee-delete";
 import { AlertDialog } from "@workspace/ui/components/alert-dialog";
 import { toggleEmployeeStatus } from "@/actions/employee";
 import { useRouter } from "next/navigation";
-import { toast } from "@workspace/ui/hooks/use-toast";
+import { toast } from "sonner";
 
 export default function EmployeeActions({ employee }: { employee: TEmployee }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -41,24 +41,15 @@ export default function EmployeeActions({ employee }: { employee: TEmployee }) {
         !employee.isActive
       );
       if (result.success) {
-        toast({
-          title: "Success",
-          description: `Employee ${employee.isActive ? "deactivated" : "activated"} successfully`,
-        });
+        toast.success(
+          `Employee ${employee.isActive ? "deactivated" : "activated"} successfully`
+        );
         router.refresh();
       } else {
-        toast({
-          title: "Error",
-          description: result.error || "Failed to update employee status",
-          variant: "destructive",
-        });
+        toast.error(result.error || "Failed to update employee status");
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred",
-        variant: "destructive",
-      });
+      toast.error("An unexpected error occurred");
     } finally {
       setIsToggling(false);
       setIsDropdownOpen(false);
